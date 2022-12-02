@@ -6,10 +6,28 @@ public class Warehouse : MonoBehaviour
     private int _wheat = 0;
     private int _milk = 0;
 
-    public void ToEmpty()
+    public bool HasMilk()
     {
-        _wheat = 0;
+        return (_milk > 0);
+    }
+
+    public bool HasWheat()
+    {
+        return (_wheat > 0);
+    }
+
+    public int GetMilk()
+    {
+        int tmp = _milk;
         _milk = 0;
+        return tmp;
+    }
+
+    public int GetWheat()
+    {
+        int tmp = _wheat;
+        _wheat = 0;
+        return tmp;
     }
 
     public void AddWheat(int value)
