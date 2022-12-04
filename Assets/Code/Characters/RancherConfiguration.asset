@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6858d877aaf4f18438c0ca7540c46593, type: 3}
-  m_Name: LocatorConfigurationSO
+  m_Script: {fileID: 11500000, guid: da9b9fc69025cb54ab98d13df1c68ce1, type: 3}
+  m_Name: RancherConfiguration
   m_EditorClassIdentifier: 
-  _placesOfInterest:
-  - _name: Establo
-    _position: {x: 6, y: 1, z: -10}
-  - _name: Almacen
-    _position: {x: -9, y: 1, z: -1}
+  _movementSpeed: 3
