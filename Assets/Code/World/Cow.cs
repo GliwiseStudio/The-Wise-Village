@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class Cow : MonoBehaviour
@@ -8,41 +7,60 @@ public class Cow : MonoBehaviour
     public event Action OnBeingHungry;
 
     private bool _hasMilk = false;
-    private bool _isHungry = true;
+    private bool _isHungry = false;
     [SerializeField] private float _generateMilkFromBeingFedTime = 5f;
-    private IEnumerator _generateMilkFromBeingFedCoroutine;
     [SerializeField] private float _becomeHungryTime = 5f;
-    private IEnumerator _becomeHungryCoroutine;
 
-    private void Awake()
+    private float _hungerCurrentTime = 0f;
+    private float _milkCurrentTime = 0f;
+
+    private void Update()
     {
-        _generateMilkFromBeingFedCoroutine = GenerateMilkFromBeingFed();
-        _becomeHungryCoroutine = BecomeHungry();
+        UpdateHunger();
+        UpdateMilkGeneration();
     }
 
-    public void Milk()
+    private void UpdateHunger()
     {
-        _hasMilk = false;
-        StartCoroutine(_becomeHungryCoroutine);
+        if(_isHungry)
+        {
+            return;
+        }
+
+        _hungerCurrentTime += Time.deltaTime;
+
+        if(_hungerCurrentTime >= _becomeHungryTime)
+        {
+            _hungerCurrentTime = 0;
+            _isHungry = true;
+            OnBeingHungry?.Invoke();
+        }
+    }
+
+    private void UpdateMilkGeneration()
+    {
+        if(_hasMilk)
+        {
+            return;
+        }
+
+        _milkCurrentTime += Time.deltaTime;
+
+        if (_milkCurrentTime >= _generateMilkFromBeingFedTime)
+        {
+            _milkCurrentTime = 0;
+            _hasMilk = true;
+            OnMilkGenerated?.Invoke();
+        }
     }
 
     public void Feed()
     {
         _isHungry = false;
-        StartCoroutine(_generateMilkFromBeingFedCoroutine);
     }
 
-    private IEnumerator GenerateMilkFromBeingFed()
+    public void Milk()
     {
-        yield return new WaitForSeconds(_generateMilkFromBeingFedTime);
-        _hasMilk = true;
-        OnMilkGenerated?.Invoke();
-    }
-
-    private IEnumerator BecomeHungry()
-    {
-        yield return new WaitForSeconds(_becomeHungryTime);
-        _isHungry = true;
-        OnBeingHungry?.Invoke();
+        _hasMilk = false;
     }
 }

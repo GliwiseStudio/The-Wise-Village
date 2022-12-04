@@ -6,6 +6,13 @@ using UnityEngine.AI;
 public class Rancher : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
+    private Cow _cow;
+    private bool _isCowHungry = false;
+    private bool _hasCowMilk = false;
+    private bool _isMilkingCows = false;
+
+    private Warehouse _warehouse;
+
     private BehaviourTreeEngine _rancherBT;
     private StateMachineEngine _feedCowsSubStateMachine;
     private StateMachineEngine _storeMilkSubStateMachine;
@@ -14,9 +21,13 @@ public class Rancher : MonoBehaviour
     private MovementController _movementController;
 
     private bool _hasFoodFromFeeders = false;
+    private bool _hasMilkToCollect = false;
+    private bool _hasMilkFromCows = false;
 
     private void Awake()
     {
+        _cow = FindObjectOfType<Cow>();
+        _warehouse = FindObjectOfType<Warehouse>();
         _locator = FindObjectOfType<Locator>();
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         _movementController = new MovementController(navMeshAgent, _configuration, new Vector3(4, 0, -10));
@@ -78,7 +89,6 @@ public class Rancher : MonoBehaviour
         LeafNode generatedMilkLeafNode = _rancherBT.CreateLeafNode("GeneratedMilk", DoNothing, IsMilkGenerated);
 
         _storeMilkSubStateMachine = new StateMachineEngine(true);
-        LeafNode storeMilkLeafNode = _rancherBT.CreateSubBehaviour("StoreMilkProcess", _storeMilkSubStateMachine);
 
         //PERCEPCIONES
         ValuePerception isMilkCollectedPerception = _storeMilkSubStateMachine.CreatePerception<ValuePerception>(IsMilkCollected);
@@ -93,9 +103,11 @@ public class Rancher : MonoBehaviour
         State moveToBarnStatee = _storeMilkSubStateMachine.CreateState("MoveToBarn", MoveToBarn);
 
         //TRANSICIONES
-        _storeMilkSubStateMachine.CreateTransition("CollectMilk-MoveToStorage", collectMilkState, isMilkStoredPerception, moveToStoreageState);
+        _storeMilkSubStateMachine.CreateTransition("CollectMilk-MoveToStorage", collectMilkState, isMilkCollectedPerception, moveToStoreageState);
         _storeMilkSubStateMachine.CreateTransition("MoveToStorage-StoreMilk", moveToStoreageState, isInStoragePerception, storeMilkState);
         _storeMilkSubStateMachine.CreateTransition("StoreMilk-MoveToBarn", storeMilkState, isMilkStoredPerception, moveToBarnStatee);
+
+        LeafNode storeMilkLeafNode = _rancherBT.CreateSubBehaviour("StoreMilkProcess", _storeMilkSubStateMachine);
         _storeMilkSubStateMachine.CreateExitTransition("MoveToBarn-Exit", moveToBarnStatee, isInBarnPerception, ReturnValues.Succeed);
 
         SucceederDecoratorNode storeMilkSucceeder = _rancherBT.CreateSucceederNode("StoreMilkSucceeder", storeMilkLeafNode);
@@ -131,8 +143,15 @@ public class Rancher : MonoBehaviour
 
     private ReturnValues AreCowsHungry()
     {
-        Debug.Log("Boom");
-        return ReturnValues.Succeed;
+        Debug.Log("Check if cow is hungry");
+        if(_isCowHungry)
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Failed;
+        }
     }
 
     private bool IsInFeedersPerception()
@@ -152,11 +171,13 @@ public class Rancher : MonoBehaviour
 
     private bool IsCharacterInBarn()
     {
+        Debug.Log("Checking if is in barn");
         return _locator.IsCharacterInPlace(transform.position, "Establo");
     }
     
     private bool AreCowsFedPerception()
     {
+        Debug.Log("Are Cows Fed " + _hasFoodFromFeeders);
         return !_hasFoodFromFeeders;
     }
 
@@ -198,70 +219,133 @@ public class Rancher : MonoBehaviour
 
     private ReturnValues AreCowsWithMilk()
     {
-        Debug.Log("Yes");
-        return ReturnValues.Succeed;
+        Debug.Log("Check if cows have milk");
+        if(_hasCowMilk)
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Failed;
+        }
     }
 
     private void MilkCows()
     {
+        Debug.Log("Milking Cow");
+        _isMilkingCows = true;
+        StartCoroutine(MilkingCows());
+    }
 
-        Debug.Log("Yes");
+    private IEnumerator MilkingCows()
+    {
+        yield return new WaitForSeconds(2.8f);
+        _hasCowMilk = false;
+        _cow.Milk();
+        _hasMilkFromCows = true;
+        _isMilkingCows = false;
     }
 
     private ReturnValues MilkCowsCheck()
     {
-        Debug.Log("Yes");
+        if(_isMilkingCows)
+        {
+            return ReturnValues.Running;
+        }
+
         return ReturnValues.Succeed;
     }
 
     private ReturnValues IsMilkGenerated()
     {
-        Debug.Log("Yes");
-        return ReturnValues.Succeed;
+        if(_hasMilkFromCows)
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Failed;
+        }
     }
 
     private bool IsMilkCollected()
     {
-        Debug.Log("Yes");
-        return true;
+        Debug.Log("Checking if milk is collected");
+        return !_hasMilkToCollect;
     }
 
     private bool IsInStorage()
     {
-        Debug.Log("Yes");
-        return true;
+        Debug.Log("Checking if is in storage");
+        return _locator.IsCharacterInPlace(transform.position, "Almacen");
     }
 
     private bool IsMilkStored()
     {
-        Debug.Log("Yes");
-        return true;
+        Debug.Log("Checking if milk is stored");
+        return !_hasMilkFromCows;
     }
 
     private void CollectMilk()
     {
+        Debug.Log("CollectingMilk");
+        StartCoroutine(CollectingMilk());
+    }
 
-        Debug.Log("Yes");
+    private IEnumerator CollectingMilk()
+    {
+        yield return new WaitForSeconds(1.8f);
+        _hasMilkToCollect = false;
+        _hasMilkFromCows = true;
     }
 
     private void MoveToStorage()
     {
-
-        Debug.Log("Yes");
+        Debug.Log("Moving To Storage");
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Almacen"));
     }
 
     private void StoreMilk()
     {
-
-        Debug.Log("Yes");
+        Debug.Log("Storing Milk");
+        StartCoroutine(StoringMilk());
     }
 
-    private void DoNothing() { Debug.Log("AA"); }
+    private IEnumerator StoringMilk()
+    {
+        yield return new WaitForSeconds(3f);
+        _warehouse.AddMilk(1);
+        _hasMilkFromCows = false;
+    }
+
+    private void DoNothing() {  }
 
     private void Update()
     {
         _storeMilkSubStateMachine.Update();
         _feedCowsSubStateMachine.Update();
         _rancherBT.Update();
+    }
+
+    private void OnEnable()
+    {
+        _cow.OnBeingHungry += SetHungryCowFlag;
+        _cow.OnMilkGenerated += SetMilkCowFlag;
+    }
+
+    private void OnDisable()
+    {
+        _cow.OnBeingHungry -= SetHungryCowFlag;
+        _cow.OnMilkGenerated -= SetMilkCowFlag;
+    }
+
+    private void SetHungryCowFlag()
+    {
+        _isCowHungry = true;
+    }
+
+    private void SetMilkCowFlag()
+    {
+        _hasCowMilk = true;
     }
 }

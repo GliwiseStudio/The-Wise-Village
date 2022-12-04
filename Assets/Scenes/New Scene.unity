@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 332960486}
   - component: {fileID: 332960485}
   - component: {fileID: 332960484}
+  - component: {fileID: 332960488}
   m_Layer: 0
   m_Name: Storage
   m_TagString: Untagged
@@ -220,6 +221,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &332960488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332960483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0fb96b382ec76e439f64642ac015bb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &561598931
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,6 +427,7 @@ GameObject:
   - component: {fileID: 1147660731}
   - component: {fileID: 1147660730}
   - component: {fileID: 1147660729}
+  - component: {fileID: 1147660733}
   m_Layer: 0
   m_Name: Barn
   m_TagString: Untagged
@@ -499,6 +513,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1147660733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147660728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37a0630488af39e4eb6030ae9f831e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _generateMilkFromBeingFedTime: 5
+  _becomeHungryTime: 7
 --- !u!1 &1153792546
 GameObject:
   m_ObjectHideFlags: 0
