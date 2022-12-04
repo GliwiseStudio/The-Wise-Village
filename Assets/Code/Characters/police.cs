@@ -15,13 +15,13 @@ public class police : MonoBehaviour
     private States actualState;
 
 
-    //position of the flags in the world (interessZones)
-    private Vector3[] PatrollingPoints = {  new Vector3 (-63.5f, 0f, -11.3f),
-                                            new Vector3 (-93.4f, 0f, -50f),
-                                            new Vector3 (18.9f, 0f, -58.2f),
-                                            new Vector3 (12.7f, 0f, -14.8f),
-                                            new Vector3 (-7.5f, 0f, 5.9f),
-                                            new Vector3 (-18.3f, 0f, -103.4f)};
+    //position of the flags in the world (interessZones in global coordinates)
+    private Vector3[] PatrollingPoints = {  new Vector3 (-22.6f, 0f, 26.83f),
+                                            new Vector3 (-16.4f, 0f, -16.6f),
+                                            new Vector3 (-53.6f, 0f, -61.8f),
+                                            new Vector3 (-93.7f, 0f, 0.6f),
+                                            new Vector3 (-78f, 0f, 19.3f),
+                                            new Vector3 (-40.32f, 0f, 43f)};
     private int patrolPoint;
 
 
