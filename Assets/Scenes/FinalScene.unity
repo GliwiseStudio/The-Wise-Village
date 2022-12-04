@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cow (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
 --- !u!4 &4935669 stripped
@@ -215,6 +219,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -282,6 +290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -343,6 +355,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -406,6 +422,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -467,6 +487,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -530,6 +554,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -592,6 +620,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: barn
       objectReference: {fileID: 0}
+    - target: {fileID: 1385894361391736, guid: 7d6919505691962458135bc69d38b4bf, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4321403789553202, guid: 7d6919505691962458135bc69d38b4bf, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -652,6 +684,10 @@ PrefabInstance:
     - target: {fileID: 1743051142854260, guid: 3416a1f8a57501f41b39470697272c5e, type: 3}
       propertyPath: m_Name
       value: SM_Bld_Preset_Hut_01_Optimized
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743051142854260, guid: 3416a1f8a57501f41b39470697272c5e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4161967746259036, guid: 3416a1f8a57501f41b39470697272c5e, type: 3}
       propertyPath: m_RootOrder
@@ -714,6 +750,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -781,6 +821,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -847,6 +891,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -908,6 +956,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -975,6 +1027,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1036,6 +1092,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -1099,6 +1159,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: swon
       objectReference: {fileID: 0}
+    - target: {fileID: 1349720928127390, guid: bb7c9b9cec34f6f49ba023837a1ec668, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4920231390817278, guid: bb7c9b9cec34f6f49ba023837a1ec668, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1160,6 +1224,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -1230,7 +1298,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &611112352
 Transform:
@@ -1265,6 +1333,10 @@ PrefabInstance:
     - target: {fileID: 1590892727004766, guid: 9762bdc7d9279e34d81154eb8193f398, type: 3}
       propertyPath: m_Name
       value: transporterChair
+      objectReference: {fileID: 0}
+    - target: {fileID: 1590892727004766, guid: 9762bdc7d9279e34d81154eb8193f398, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4405541404680098, guid: 9762bdc7d9279e34d81154eb8193f398, type: 3}
       propertyPath: m_RootOrder
@@ -1331,6 +1403,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1392,6 +1468,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -1523,6 +1603,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cow (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
 --- !u!4 &722546490 stripped
@@ -1540,6 +1624,10 @@ PrefabInstance:
     - target: {fileID: 1984039378238888, guid: 0e9128c545b18fb46b1692f13b123523, type: 3}
       propertyPath: m_Name
       value: well
+      objectReference: {fileID: 0}
+    - target: {fileID: 1984039378238888, guid: 0e9128c545b18fb46b1692f13b123523, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4187734344058398, guid: 0e9128c545b18fb46b1692f13b123523, type: 3}
       propertyPath: m_RootOrder
@@ -1601,7 +1689,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &782319135
 Transform:
@@ -1638,7 +1726,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &790580389
 Transform:
@@ -1673,6 +1761,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -1740,6 +1832,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1801,6 +1897,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -1867,6 +1967,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -1937,7 +2041,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &900153738
 Transform:
@@ -1970,6 +2074,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -2036,6 +2144,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -2163,6 +2275,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cow (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
 --- !u!4 &1087506715 stripped
@@ -2184,7 +2300,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1096509639
 Transform:
@@ -2219,6 +2335,10 @@ PrefabInstance:
     - target: {fileID: 1739242526329770, guid: 5a78036c065d79a4898f622b141051f0, type: 3}
       propertyPath: m_Name
       value: SM_Bld_Preset_House_09_A_Optimized
+      objectReference: {fileID: 0}
+    - target: {fileID: 1739242526329770, guid: 5a78036c065d79a4898f622b141051f0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4064253928706500, guid: 5a78036c065d79a4898f622b141051f0, type: 3}
       propertyPath: m_RootOrder
@@ -2282,6 +2402,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -2343,6 +2467,10 @@ PrefabInstance:
     - target: {fileID: 1474906737303118, guid: 5a47459c828b0834aac48f15a22069f0, type: 3}
       propertyPath: m_Name
       value: SM_Bld_Preset_Outhouse_01_Optimized
+      objectReference: {fileID: 0}
+    - target: {fileID: 1474906737303118, guid: 5a47459c828b0834aac48f15a22069f0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4043288764506988, guid: 5a47459c828b0834aac48f15a22069f0, type: 3}
       propertyPath: m_RootOrder
@@ -2406,6 +2534,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: shop
       objectReference: {fileID: 0}
+    - target: {fileID: 1064461626251538, guid: 55319a7a63e4c0947858313b8d665d44, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188027802090210, guid: 55319a7a63e4c0947858313b8d665d44, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4762651109033914, guid: 55319a7a63e4c0947858313b8d665d44, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -2462,6 +2598,10 @@ PrefabInstance:
     - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
@@ -2524,6 +2664,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -2651,6 +2795,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: cow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0754cf8593448aa44af8b8c96b305279, type: 3}
 --- !u!4 &1300435206 stripped
@@ -2668,6 +2816,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -2735,6 +2887,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Reeds_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2801,6 +2957,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -2866,7 +3026,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1436169905
 Transform:
@@ -2901,6 +3061,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -2967,6 +3131,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -3040,7 +3208,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!64 &1522256029
 MeshCollider:
@@ -3132,6 +3300,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3197,7 +3369,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1548246053
 Transform:
@@ -3230,6 +3402,10 @@ PrefabInstance:
     - target: {fileID: 1692375915998492, guid: b32c9cfcbcc98e446aea172840545b6c, type: 3}
       propertyPath: m_Name
       value: eater
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692375915998492, guid: b32c9cfcbcc98e446aea172840545b6c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4563188584583222, guid: b32c9cfcbcc98e446aea172840545b6c, type: 3}
       propertyPath: m_RootOrder
@@ -3387,6 +3563,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Bld_Preset_House_02_A_Optimized
       objectReference: {fileID: 0}
+    - target: {fileID: 1310738999662834, guid: 9f650d6799a179d438d3695a1fac84e6, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4257262165249590, guid: 9f650d6799a179d438d3695a1fac84e6, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3449,6 +3629,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Bld_Preset_House_07_Optimized
       objectReference: {fileID: 0}
+    - target: {fileID: 1904262631371420, guid: 4d3bedae59bad854eac1c80230ab57f0, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4174202966241354, guid: 4d3bedae59bad854eac1c80230ab57f0, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -3510,6 +3694,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -3580,7 +3768,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1706183115
 Transform:
@@ -3612,6 +3800,10 @@ PrefabInstance:
     - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_Name
       value: SM_Env_Reeds_03 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334434696216914, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4572508316666152, guid: 2b93997388764ab4aa8a4b07f0fc727d, type: 3}
       propertyPath: m_RootOrder
@@ -3679,6 +3871,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -3740,6 +3936,10 @@ PrefabInstance:
     - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
@@ -3887,6 +4087,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Item_Bucket_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1592350337673580, guid: 64c65b7a964a2964b8cc45cb9bfe9064, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4374957085183038, guid: 64c65b7a964a2964b8cc45cb9bfe9064, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -3948,6 +4152,10 @@ PrefabInstance:
     - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
@@ -4011,6 +4219,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -4072,6 +4284,10 @@ PrefabInstance:
     - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Battle_Banner_03 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911324588445948, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4145446585980970, guid: 03232ca4d1de1f44289e77b986aea352, type: 3}
       propertyPath: m_RootOrder
@@ -4135,6 +4351,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Grass_Tuft_03
       objectReference: {fileID: 0}
+    - target: {fileID: 1620045131287868, guid: 632d296771cf4a848825cb402af539a1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4021698331385018, guid: 632d296771cf4a848825cb402af539a1, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4196,6 +4416,10 @@ PrefabInstance:
     - target: {fileID: 1349720928127390, guid: bb7c9b9cec34f6f49ba023837a1ec668, type: 3}
       propertyPath: m_Name
       value: swon2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1349720928127390, guid: bb7c9b9cec34f6f49ba023837a1ec668, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4920231390817278, guid: bb7c9b9cec34f6f49ba023837a1ec668, type: 3}
       propertyPath: m_RootOrder

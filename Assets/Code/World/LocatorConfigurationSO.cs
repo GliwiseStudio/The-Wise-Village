@@ -8,7 +8,7 @@ public class LocatorConfigurationSO : ScriptableObject
     [SerializeField] private List<PlaceOfInterest> _placesOfInterest;
     private IDictionary<string, Vector3> _placesOfInteresStorage;
 
-    private void Awake()
+    public void Initialize()
     {
         InitializeStorage();
     }
