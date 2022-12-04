@@ -52,8 +52,46 @@ public class Rancher : MonoBehaviour
         milkCowsSequence.AddChild(milkCowsSucceeder);
 
         //SECUENCIA 3
+        LeafNode generatedMilkLeafNode = _rancherBT.CreateLeafNode("GeneratedMilk", null, IsMilkGenerated);
+
+        StateMachineEngine storeMilkStateMachine = new StateMachineEngine(true);
+
+        //PERCEPCIONES
+        ValuePerception isMilkCollectedPerception = storeMilkStateMachine.CreatePerception<ValuePerception>(IsMilkCollected);
+        ValuePerception isInStoragePerception = storeMilkStateMachine.CreatePerception<ValuePerception>(IsInStorage);
+        ValuePerception isMilkStoredPerception = storeMilkStateMachine.CreatePerception<ValuePerception>(IsMilkStored);
+        ValuePerception isInBarnPerception = storeMilkStateMachine.CreatePerception<ValuePerception>(IsInBarnPerception);
+
+        //ESTADOS
+        State collectMilkState = storeMilkStateMachine.CreateEntryState("CollectMilk", CollectMilk);
+        State moveToStoreageState = storeMilkStateMachine.CreateState("MoveToStorage", MoveToStorage);
+        State storeMilkState = storeMilkStateMachine.CreateState("StoreMilk", StoreMilk);
+        State moveToBarnStatee = storeMilkStateMachine.CreateState("MoveToBarn", MoveToBarn);
+
+        //TRANSICIONES
+        storeMilkStateMachine.CreateTransition("CollectMilk-MoveToStorage", collectMilkState, isMilkStoredPerception, moveToStoreageState);
+        storeMilkStateMachine.CreateTransition("MoveToStorage-StoreMilk", moveToStoreageState, isInStoragePerception, storeMilkState);
+        storeMilkStateMachine.CreateTransition("StoreMilk-MoveToBarn", storeMilkState, isMilkStoredPerception, moveToBarnStatee);
+        storeMilkStateMachine.CreateExitTransition("MoveToBarn-Exit", moveToBarnStatee, isInBarnPerception, ReturnValues.Succeed);
+
+        LeafNode storeMilkLeafNode = _rancherBT.CreateSubBehaviour("StoreMilkProcess", storeMilkStateMachine);
+        SucceederDecoratorNode storeMilkSucceeder = _rancherBT.CreateSucceederNode("StoreMilkSucceeder", storeMilkLeafNode);
+
+        SequenceNode storeMilkSequence = _rancherBT.CreateSequenceNode("StoreMilkSequence", false);
+        storeMilkSequence.AddChild(isInBarnLeafNode);
+        storeMilkSequence.AddChild(generatedMilkLeafNode);
+        storeMilkSequence.AddChild(storeMilkSucceeder);
 
         //SELECTOR
+        SelectorNode selector = _rancherBT.CreateSelectorNode("Selector");
+        selector.AddChild(feedSequence);
+        selector.AddChild(milkCowsSequence);
+        selector.AddChild(storeMilkSequence);
+
+        //LOOP INFINITO
+        LoopDecoratorNode infiniteLoop = _rancherBT.CreateLoopNode("InfiniteLoop", selector);
+
+        _rancherBT.SetRootNode(infiniteLoop);
     }
 
     private ReturnValues IsInBarn()
@@ -119,5 +157,40 @@ public class Rancher : MonoBehaviour
     private ReturnValues MilkCowsCheck()
     {
         return ReturnValues.Succeed;
+    }
+
+    private ReturnValues IsMilkGenerated()
+    {
+        return ReturnValues.Succeed;
+    }
+
+    private bool IsMilkCollected()
+    {
+        return true;
+    }
+
+    private bool IsInStorage()
+    {
+        return true;
+    }
+
+    private bool IsMilkStored()
+    {
+        return true;
+    }
+
+    private void CollectMilk()
+    {
+
+    }
+
+    private void MoveToStorage()
+    {
+
+    }
+
+    private void StoreMilk()
+    {
+
     }
 }
