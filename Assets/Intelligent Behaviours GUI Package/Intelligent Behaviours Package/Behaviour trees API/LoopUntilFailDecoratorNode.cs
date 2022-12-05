@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class LoopUntilFailDecoratorNode : TreeNode {
+public class LoopUntilSucceedDecoratorNode : TreeNode {
 
-    public LoopUntilFailDecoratorNode(string name, TreeNode child, BehaviourTreeEngine behaviourTree)
+    public LoopUntilSucceedDecoratorNode(string name, TreeNode child, BehaviourTreeEngine behaviourTree)
     {
         base.Child = child;
         Child.ParentNode = this;
@@ -45,7 +45,7 @@ public class LoopUntilFailDecoratorNode : TreeNode {
 
     public override ReturnValues ReturnNodeValue()
     {
-        if(Child.ReturnValue == ReturnValues.Failed) {
+        if(Child.ReturnValue == ReturnValues.Succeed) {
             ReturnValue = ReturnValues.Succeed;
         }
         else {
