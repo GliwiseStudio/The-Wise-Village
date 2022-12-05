@@ -1,13 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Carrier : MonoBehaviour
 {
+    [SerializeField] private CharacterConfigurationSO _configuration;
+
     private StateMachineEngine _FSMcarrier;
     private BehaviourTreeEngine _BTcarrier;
 
     private Locator _locator;
+    private MovementController _movementController;
+
+    private int _milk = 0;
+    private int _wheat = 0;
+
+    private Supplies _supplies;
+    private Warehouse _warehouse;
+
+    private bool askedForSupplies = false;
 
     Transition trans;
 
@@ -15,7 +28,25 @@ public class Carrier : MonoBehaviour
     void Awake()
     {
         _locator = FindObjectOfType<Locator>();
+        _warehouse = FindObjectOfType<Warehouse>();
+        _supplies = FindObjectOfType<Supplies>();
+        _movementController = new MovementController(this.GetComponent<NavMeshAgent>(), _configuration, new Vector3(0,0,0));
         CreateAI();
+    }
+
+    private void OnEnable()
+    {
+        _supplies.OnDemand += OnDemand;
+    }
+
+    private void OnDisable()
+    {
+        _supplies.OnDemand -= OnDemand;
+    }
+
+    private void OnDemand() 
+    {
+        _FSMcarrier.Fire(trans);
     }
 
     // Update is called once per frame
@@ -32,9 +63,9 @@ public class Carrier : MonoBehaviour
         _FSMcarrier = new StateMachineEngine();
 
         //PERCEPCIONES
-        Perception sum = _FSMcarrier.CreatePerception<PushPerception>();
+        Perception suministroSolicitado = _FSMcarrier.CreatePerception<PushPerception>();
         ValuePerception estaEnAlmacen = _FSMcarrier.CreatePerception<ValuePerception>(ComprobarEstaEnAlmacen);
-        ValuePerception suministroRecogido = _FSMcarrier.CreatePerception<ValuePerception>(ComprobarRecogidaSuministros);
+        Perception suministroRecogido = _FSMcarrier.CreatePerception<BehaviourTreeStatusPerception>(_BTcarrier, ReturnValues.Succeed);
         ValuePerception estaEnTienda = _FSMcarrier.CreatePerception<ValuePerception>(ComprobarEstaEnTienda);
         ValuePerception suministroEntregado = _FSMcarrier.CreatePerception<ValuePerception>(ComprobarEntregaSuministros);
         ValuePerception estaEnPuesto = _FSMcarrier.CreatePerception<ValuePerception>(ComprobarEstaEnPuesto);
@@ -42,7 +73,6 @@ public class Carrier : MonoBehaviour
         //ESTADOS
         State esperar = _FSMcarrier.CreateEntryState("Esperar",EsperarSolicitud);
         State moverseAlmacen = _FSMcarrier.CreateState("MoverseAlmacen", MoverseAlmacen);
-        State arbol =_FSMcarrier.CreateSubStateMachine("EstadoArbol", _BTcarrier);
         State moverseTienda = _FSMcarrier.CreateState("MoverseTienda", MoverseTienda);
         State entregarSuministro = _FSMcarrier.CreateState("EntregarSuministro", EntregarSuministro);
         State moversePuesto = _FSMcarrier.CreateState("MoversePuesto", MoversePuesto);
@@ -57,97 +87,131 @@ public class Carrier : MonoBehaviour
         secuencia.AddChild(trigoAlmacenado);
         secuencia.AddChild(recogerSuministro);
 
-        InverterDecoratorNode inverter = _BTcarrier.CreateInverterNode("inverter", secuencia);
-        LoopUntilFailDecoratorNode loop = _BTcarrier.CreateLoopUntilFailNode("loop", inverter);
-        _BTcarrier.SetRootNode(loop);
+        //InverterDecoratorNode inverter = _BTcarrier.CreateInverterNode("inverter", secuencia);
+        //LoopUntilFailDecoratorNode loop = _BTcarrier.CreateLoopUntilFailNode("loop", inverter);
+        _BTcarrier.SetRootNode(secuencia);
 
         //TRANSICIONES
-        trans = _FSMcarrier.CreateTransition("transicion1", esperar, sum, moverseAlmacen);
+        trans = _FSMcarrier.CreateTransition("transicion1", esperar, suministroSolicitado, moverseAlmacen);
+
+        State arbol =_FSMcarrier.CreateSubStateMachine("EstadoArbol", _BTcarrier);
+
         Transition transicion2 = _FSMcarrier.CreateTransition("transicion2", moverseAlmacen, estaEnAlmacen, arbol);
         Transition transicion3 = _BTcarrier.CreateExitTransition("transicion3", arbol, suministroRecogido, moverseTienda);
         Transition transicion4 = _FSMcarrier.CreateTransition("transicion4", moverseTienda, estaEnTienda, entregarSuministro);
         Transition transicion5 = _FSMcarrier.CreateTransition("transicion5", entregarSuministro, suministroEntregado, moversePuesto);
         Transition transicion6 = _FSMcarrier.CreateTransition("transicion6", moversePuesto, estaEnPuesto, esperar);
-
-        Debug.Log("Hola caracola");
     }
 
     void EsperarSolicitud() 
     {
         Debug.Log("Estado inicial de esperar");
+
+        //temporal
         StartCoroutine(llamarPercepcion());
     }
 
     void MoverseAlmacen() 
     {
-        Debug.Log("Se esta moviendo al almacen");
+        Debug.Log("Voy al almacen");
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Almacen"));
     }
 
     bool ComprobarEstaEnAlmacen()
     {
-        Debug.Log("Esta en el almacen");
-        return true;
+        Debug.Log("Estoy de camino al almacen");
+        return _locator.IsCharacterInPlace(transform.position, "Almacen");
     }
 
     void MoverseTienda()
     {
-        Debug.Log("Se esta moviendo a la tienda");
+        Debug.Log("Voy a la tienda");
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Tienda"));
     }
 
     bool ComprobarEstaEnTienda()
     {
-        Debug.Log("Esta en la tienda");
-        return true;
+        Debug.Log("Estoy de camino a la tienda");
+        return _locator.IsCharacterInPlace(transform.position, "Tienda");
     }
 
+    /*
     bool ComprobarRecogidaSuministros()
     {
-        Debug.Log("Suministros recogidos check");
-        return true;
-    }
+        if (_milk > 0 && _wheat > 0)
+        {
+            Debug.Log("Tengo suministros");
+            return true;
+        }
+        else 
+        {
+            Debug.Log("No tengo suministros");
+            return false;
+        }
+    }*/
     void EntregarSuministro()
     {
+        _supplies.Deliver(_milk, _wheat);
         Debug.Log("Se ha entregado los suministros");
     }
 
     bool ComprobarEntregaSuministros()
     {
         Debug.Log("Suministros entregados check");
+        //Esperar a la animacion
         return true;
     }
 
     void MoversePuesto()
     {
-        Debug.Log("Se esta moviendo al puesto");
+        Debug.Log("Voy al puesto");
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Puesto"));
     }
 
     bool ComprobarEstaEnPuesto()
     {
-        Debug.Log("Esta en el puesto");
-        return true;
+        Debug.Log("Estoy de camino al puesto");
+        return _locator.IsCharacterInPlace(transform.position, "Puesto");
     }
 
     //ARBOL
     ReturnValues ComprobarLeche() 
     {
+        if (_warehouse.HasMilk())
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Running;
+        }
         Debug.Log("Leche comprobada");
-        return ReturnValues.Succeed;
     }
 
     ReturnValues ComprobarTrigo()
     {
+        if (_warehouse.HasWheat())
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Running;
+        }
         Debug.Log("Trigo comprobado");
-        return ReturnValues.Succeed;
     }
 
     void RecogerSuministro() 
     {
-        
+        Debug.Log("Suministros recogido");
+        _milk = _warehouse.GetMilk();
+        _wheat = _warehouse.GetWheat();
     }
 
     ReturnValues RecogerSuminstroCheck()
     {
-        Debug.Log("Suministro recogido");
+        Debug.Log("Suministro recogido 2");
+        //esperar animacion
         return ReturnValues.Succeed;
     }
 
