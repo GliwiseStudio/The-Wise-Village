@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AnimationsHandler : MonoBehaviour
+public class AnimationsHandler
 {
     protected readonly Animator animator = null;
 
