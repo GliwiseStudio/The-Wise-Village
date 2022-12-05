@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da9b9fc69025cb54ab98d13df1c68ce1, type: 3}
   m_Name: CarrierConfiguration
   m_EditorClassIdentifier: 
-  _movementSpeed: 7
+  _movementSpeed: 4

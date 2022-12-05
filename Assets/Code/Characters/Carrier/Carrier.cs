@@ -113,9 +113,13 @@ public class Carrier : MonoBehaviour
     void EsperarSolicitud() 
     {
         Debug.Log("Estado inicial de esperar");
+        _carrieAnimatorHandler.PlayAnimationState("Sitting", 0.1f);
+        Invoke("GirarPersonaje", 1f);
+    }
 
-        //temporal
-        //StartCoroutine(llamarPercepcion());
+    void GirarPersonaje() 
+    {
+        this.transform.SetPositionAndRotation(this.transform.position, Quaternion.Euler(0, 0, 0));
     }
 
     void MoverseAlmacen() 
@@ -152,20 +156,6 @@ public class Carrier : MonoBehaviour
         return _locator.IsCharacterInPlace(transform.position, "Shop");
     }
 
-    /*
-    bool ComprobarRecogidaSuministros()
-    {
-        if (_milk > 0 && _wheat > 0)
-        {
-            Debug.Log("Tengo suministros");
-            return true;
-        }
-        else 
-        {
-            Debug.Log("No tengo suministros");
-            return false;
-        }
-    }*/
     void EntregarSuministro()
     {
         _carrieAnimatorHandler.PlayAnimationState("GiveItems", 0.1f);
@@ -254,11 +244,5 @@ public class Carrier : MonoBehaviour
     void DoNothing() 
     {
 
-    }
-
-    IEnumerator llamarPercepcion() 
-    {
-        yield return new WaitForSeconds(2);
-        _FSMcarrier.Fire(trans);
     }
 }
