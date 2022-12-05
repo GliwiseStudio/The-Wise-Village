@@ -3,13 +3,13 @@ using UnityEngine;
 public class Thief: MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    private ThiefAnimationsHandler _animationsHandler;
+    //private ThiefAnimationsHandler _animationsHandler;
     private Locator _locator;
 	private StateMachineEngine steal = new StateMachineEngine(true);
 	
     private void Awake()
     {
-        _animationsHandler = new FarmerAnimationsHandler(_animator);
+        //_animationsHandler = new FarmerAnimationsHandler(_animator);
         _locator = FindObjectOfType<Locator>();
     }
 
@@ -43,28 +43,28 @@ public class Thief: MonoBehaviour
 		steal.CreateTransition("Unconscius-Walk", unconsciusState, hasUnconsciusAnimationFinishedPerception, walkState);      
     }
 	
-	private ReturnValues StealStateActive(){
-		return ReturnValues.Succed;
+	private bool StealStateActive(){
+		return true;
 	}
 	
-	private ReturnValues IsInObjective(){
-		return ReturnValues.Succed;
+	private bool IsInObjective(){
+		return true;
 	}
 	
 	private bool HasStealAnimationFinished(){
-		
+		return true;
 	}
 	
-	private ReturnValues IsSeenByPolice(){
-		ReturnValues.Succed;
+	private bool IsSeenByPolice(){
+		return true;
 	}
 	
 	private bool NotReachedOrSeenByPolice(){
 		return true;
 	}
 		
-	private ReturnValues PoliceReachedThiefPerception(){
-		ReturnValues.Succed;
+	private bool PoliceReachedThiefPerception(){
+		return true;
 	}
 	
 	private bool UnconsciusAnimationFinishedPerception(){
