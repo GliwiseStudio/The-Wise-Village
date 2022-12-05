@@ -199,10 +199,10 @@ public class BehaviourTreeEngine : BehaviourEngine {
     /// <param name="name">The name of the node</param>
     /// <param name="child">The child of the node</param>
     /// <returns></returns>
-    public LoopUntilSucceedDecoratorNode CreateLoopUntilSucceedNode(string name, TreeNode child)
+    public LoopUntilFailDecoratorNode CreateLoopUntilFailNode(string name, TreeNode child)
     {
         if(!states.ContainsKey(name)) {
-            LoopUntilSucceedDecoratorNode loopUntilSucceedNode = new LoopUntilSucceedDecoratorNode(name, child, this);
+            LoopUntilFailDecoratorNode loopUntilSucceedNode = new LoopUntilFailDecoratorNode(name, child, this);
             BTnodes.Add(loopUntilSucceedNode);
             states.Add(name, loopUntilSucceedNode.StateNode);
 
