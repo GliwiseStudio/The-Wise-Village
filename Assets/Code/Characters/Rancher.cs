@@ -130,7 +130,6 @@ public class Rancher : MonoBehaviour
         LoopDecoratorNode infiniteLoop = _rancherBT.CreateLoopNode("InfiniteLoop", selector);
 
         _rancherBT.SetRootNode(infiniteLoop);
-        Debug.Log("asjdsdk");
     }
 
     private ReturnValues IsInBarn()
@@ -189,6 +188,12 @@ public class Rancher : MonoBehaviour
     {
         Debug.Log("Move To feeders");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Comederos"));
+        PlayWalkAnimation();
+    }
+
+    private void PlayWalkAnimation()
+    {
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
     }
     
     private void CollectFood()
@@ -207,11 +212,13 @@ public class Rancher : MonoBehaviour
     {
         Debug.Log("Moving To Barn");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Establo"));
+        PlayWalkAnimation();
     }
 
     private void FeedCows()
     {
         Debug.Log("Feeding Cows");
+        PlayFeedAnimation();
         StartCoroutine(FeedingCows());
     }
 
@@ -240,6 +247,7 @@ public class Rancher : MonoBehaviour
     {
         Debug.Log("Milking Cow");
         _isMilkingCows = true;
+        PlayMilkAnimation();
         StartCoroutine(MilkingCows());
     }
 
@@ -309,6 +317,7 @@ public class Rancher : MonoBehaviour
     {
         Debug.Log("Moving To Storage");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Almacen"));
+        PlayWalkAnimation();
     }
 
     private void StoreMilk()
@@ -359,5 +368,15 @@ public class Rancher : MonoBehaviour
     private void SetMilkCowFlag()
     {
         _hasCowMilk = true;
+    }
+
+    private void PlayFeedAnimation()
+    {
+        _animationsHandler.PlayAnimationState("Feed", 0.1f);
+    }
+
+    private void PlayMilkAnimation()
+    {
+        _animationsHandler.PlayAnimationState("Milk", 0.1f);
     }
 }
