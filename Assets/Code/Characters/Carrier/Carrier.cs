@@ -7,6 +7,8 @@ using UnityEngine.AI;
 public class Carrier : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
+    private Animator _animator;
+    private CarrierAnimationsHandler _carrieAnimatorHandler;
 
     private StateMachineEngine _FSMcarrier;
     private BehaviourTreeEngine _BTcarrier;
@@ -30,6 +32,8 @@ public class Carrier : MonoBehaviour
         _locator = FindObjectOfType<Locator>();
         _warehouse = FindObjectOfType<Warehouse>();
         _supplies = FindObjectOfType<Supplies>();
+        _animator = GetComponent<Animator>();
+        _carrieAnimatorHandler = new CarrierAnimationsHandler(_animator);
         CreateAI();
     }
 
@@ -116,12 +120,17 @@ public class Carrier : MonoBehaviour
 
     void MoverseAlmacen() 
     {
+        _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         Debug.Log("Voy al almacen");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Almacen"));
     }
 
     bool ComprobarEstaEnAlmacen()
     {
+        if (_locator.IsCharacterInPlace(transform.position, "Almacen")) 
+        {
+            _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
+        }
         //Debug.Log("Estoy de camino al almacen");
         return _locator.IsCharacterInPlace(transform.position, "Almacen");
     }
@@ -129,12 +138,17 @@ public class Carrier : MonoBehaviour
     void MoverseTienda()
     {
         Debug.Log("Voy a la tienda");
+        _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
 
     bool ComprobarEstaEnTienda()
     {
         Debug.Log("Estoy de camino a la tienda");
+        if(_locator.IsCharacterInPlace(transform.position, "Shop"))
+        {
+            _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
+        }
         return _locator.IsCharacterInPlace(transform.position, "Shop");
     }
 
@@ -154,26 +168,38 @@ public class Carrier : MonoBehaviour
     }*/
     void EntregarSuministro()
     {
-        _supplies.Deliver(_milk, _wheat);
+        _carrieAnimatorHandler.PlayAnimationState("GiveItems", 0.1f);
         Debug.Log("Se ha entregado los suministros");
     }
 
     bool ComprobarEntregaSuministros()
     {
         Debug.Log("Suministros entregados check");
-        //Esperar a la animacion
-        return true;
+        if (_carrieAnimatorHandler.GiveItemsSuccesfully())
+        {
+            _supplies.Deliver(_milk, _wheat);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     void MoversePuesto()
     {
         Debug.Log("Voy al puesto");
+        _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
 
     bool ComprobarEstaEnPuesto()
     {
         //Debug.Log("Estoy de camino al puesto");
+        if (_locator.IsCharacterInPlace(transform.position, "CarrierPlace"))
+        {
+            _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
+        }
         return _locator.IsCharacterInPlace(transform.position, "CarrierPlace");
     }
 
@@ -203,11 +229,11 @@ public class Carrier : MonoBehaviour
         {
             return ReturnValues.Running;
         }
-        Debug.Log("Trigo comprobado");
     }
 
     void RecogerSuministro() 
     {
+        _carrieAnimatorHandler.PlayAnimationState("GrabObject", 0.1f);
         Debug.Log("Suministros recogido");
         _milk = _warehouse.GetMilk();
         _wheat = _warehouse.GetWheat();
@@ -215,9 +241,14 @@ public class Carrier : MonoBehaviour
 
     ReturnValues RecogerSuminstroCheck()
     {
-        Debug.Log("Suministro recogido 2");
-        //esperar animacion
-        return ReturnValues.Succeed;
+        if (_carrieAnimatorHandler.GetGrabObjectSuccesfully()) 
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Running;
+        }
     }
 
     void DoNothing() 

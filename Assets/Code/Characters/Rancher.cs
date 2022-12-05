@@ -7,6 +7,7 @@ public class Rancher : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
     [SerializeField] private Animator _animator;
+
     private Cow _cow;
     private bool _isCowHungry = false;
     private bool _hasCowMilk = false;
@@ -20,7 +21,7 @@ public class Rancher : MonoBehaviour
 
     private Locator _locator;
     private MovementController _movementController;
-    private RancherAnimationHandler _animationsHandler;
+    private CarrierAnimationsHandler _animationsHandler;
 
     private bool _hasFoodFromFeeders = false;
     private bool _hasMilkToCollect = false;
@@ -33,7 +34,7 @@ public class Rancher : MonoBehaviour
         _locator = FindObjectOfType<Locator>();
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         _movementController = new MovementController(navMeshAgent, _configuration, new Vector3(4, 0, -10));
-        _animationsHandler = new RancherAnimationHandler(_animator);
+        _animationsHandler = new CarrierAnimationsHandler(_animator);
 
         CreateAI();
     }
