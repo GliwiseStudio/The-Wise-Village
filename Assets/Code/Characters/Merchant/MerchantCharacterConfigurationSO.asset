@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da9b9fc69025cb54ab98d13df1c68ce1, type: 3}
-  m_Name: MerchanCharacterCondifugrationSO
+  m_Name: MerchantCharacterConfigurationSO
   m_EditorClassIdentifier: 
   _movementSpeed: 5
