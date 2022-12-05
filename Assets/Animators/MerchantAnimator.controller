@@ -14,6 +14,7 @@ AnimatorState:
   - {fileID: -5260863898572178090}
   m_StateMachineBehaviours:
   - {fileID: 5094268829307158571}
+  - {fileID: 6837420251272631805}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -42,6 +43,7 @@ AnimatorState:
   - {fileID: 6358952770971671752}
   m_StateMachineBehaviours:
   - {fileID: 3534807241134580703}
+  - {fileID: 1696715786022450125}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -70,6 +72,7 @@ AnimatorState:
   - {fileID: 3260385236334262096}
   m_StateMachineBehaviours:
   - {fileID: 2897563946314060016}
+  - {fileID: -2173542518971136995}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -106,6 +109,20 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &-2173542518971136995
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8415dcae9721424d924677c33e90c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterName: InteractWithSuppliesSuccesfully
+  status: 0
 --- !u!1102 &-685996038948196698
 AnimatorState:
   serializedVersion: 6
@@ -172,6 +189,20 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!114 &1696715786022450125
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8415dcae9721424d924677c33e90c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterName: SellSuccesfully
+  status: 0
 --- !u!1107 &1781953758545395938
 AnimatorStateMachine:
   serializedVersion: 6
@@ -318,3 +349,17 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!114 &6837420251272631805
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8415dcae9721424d924677c33e90c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameterName: TalkSuccesfully
+  status: 0

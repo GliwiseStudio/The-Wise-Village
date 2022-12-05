@@ -16,9 +16,9 @@ MonoBehaviour:
   - _name: Almacen
     _position: {x: -9, y: 1, z: -1}
     _distanceOffset: 2.5
-  - _name: Tienda
-    _position: {x: 10.61, y: 1, z: -8.15}
+  - _name: CarrierPlace
+    _position: {x: 10.61, y: 1, z: -6}
     _distanceOffset: 2.5
-  - _name: Puesto
-    _position: {x: -4.26, y: 1, z: -17.88}
+  - _name: Shop
+    _position: {x: -4.26, y: 1, z: -15}
     _distanceOffset: 2.5

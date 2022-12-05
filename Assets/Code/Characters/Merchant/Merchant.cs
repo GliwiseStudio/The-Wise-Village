@@ -17,19 +17,26 @@ public class Merchant : MonoBehaviour
     [SerializeField] private int _milk = 3;
     [SerializeField] private int _bread = 3;
 
+    private NavMeshAgent _navMeshAgent;
+
     #endregion
 
     private void Awake()
     {
         _locator = FindObjectOfType<Locator>();
-        NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
-        _movementController = new MovementController(navMeshAgent, _configuration, new Vector3(-71.9f, 1, -17));
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        
         _animator = GetComponent<Animator>();
         
         _animationsHandler = new MerchantAnimationsHandler(_animator);
         _suppliesManager = FindObjectOfType<Supplies>();
         
         CreateAI();
+    }
+
+    private void Start()
+    {
+        _movementController = new MovementController(_navMeshAgent, _configuration, _locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
 
     private void Update()
@@ -128,8 +135,10 @@ public class Merchant : MonoBehaviour
 
     private void UpdateSuppliesInfo() // on delivery event
     {
+        Debug.Log("updatedSuppliesInfo");
         _milk += _suppliesManager.GetMilk();
         _bread += _suppliesManager.GetWheat();
+        Debug.Log("milk: " + _milk + " wheat: " + _bread);
     }
 
     #region Checks
@@ -158,8 +167,7 @@ public class Merchant : MonoBehaviour
     {
         if (_milk == 0 || _bread == 0)
         {
-            // the carrier has not given delivered the supplies yet, still running
-            Debug.Log("Still no supplies");
+            // the carrier has not delivered the supplies yet, still running
             return ReturnValues.Running;
         }
         else

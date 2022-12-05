@@ -30,8 +30,12 @@ public class Carrier : MonoBehaviour
         _locator = FindObjectOfType<Locator>();
         _warehouse = FindObjectOfType<Warehouse>();
         _supplies = FindObjectOfType<Supplies>();
-        _movementController = new MovementController(this.GetComponent<NavMeshAgent>(), _configuration, new Vector3(0,0,0));
         CreateAI();
+    }
+
+    private void Start()
+    {
+        _movementController = new MovementController(this.GetComponent<NavMeshAgent>(), _configuration, _locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
 
     private void OnEnable()
@@ -88,7 +92,6 @@ public class Carrier : MonoBehaviour
         secuencia.AddChild(recogerSuministro);
 
         //InverterDecoratorNode inverter = _BTcarrier.CreateInverterNode("inverter", secuencia);
-        //LoopUntilFailDecoratorNode loop = _BTcarrier.CreateLoopUntilFailNode("loop", inverter);
         _BTcarrier.SetRootNode(secuencia);
 
         //TRANSICIONES
@@ -108,7 +111,7 @@ public class Carrier : MonoBehaviour
         Debug.Log("Estado inicial de esperar");
 
         //temporal
-        StartCoroutine(llamarPercepcion());
+        //StartCoroutine(llamarPercepcion());
     }
 
     void MoverseAlmacen() 
@@ -119,20 +122,20 @@ public class Carrier : MonoBehaviour
 
     bool ComprobarEstaEnAlmacen()
     {
-        Debug.Log("Estoy de camino al almacen");
+        //Debug.Log("Estoy de camino al almacen");
         return _locator.IsCharacterInPlace(transform.position, "Almacen");
     }
 
     void MoverseTienda()
     {
         Debug.Log("Voy a la tienda");
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Tienda"));
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
 
     bool ComprobarEstaEnTienda()
     {
         Debug.Log("Estoy de camino a la tienda");
-        return _locator.IsCharacterInPlace(transform.position, "Tienda");
+        return _locator.IsCharacterInPlace(transform.position, "Shop");
     }
 
     /*
@@ -165,18 +168,19 @@ public class Carrier : MonoBehaviour
     void MoversePuesto()
     {
         Debug.Log("Voy al puesto");
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Puesto"));
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
 
     bool ComprobarEstaEnPuesto()
     {
-        Debug.Log("Estoy de camino al puesto");
-        return _locator.IsCharacterInPlace(transform.position, "Puesto");
+        //Debug.Log("Estoy de camino al puesto");
+        return _locator.IsCharacterInPlace(transform.position, "CarrierPlace");
     }
 
     //ARBOL
     ReturnValues ComprobarLeche() 
     {
+        return ReturnValues.Succeed;
         if (_warehouse.HasMilk())
         {
             return ReturnValues.Succeed;
@@ -190,6 +194,7 @@ public class Carrier : MonoBehaviour
 
     ReturnValues ComprobarTrigo()
     {
+        return ReturnValues.Succeed;
         if (_warehouse.HasWheat())
         {
             return ReturnValues.Succeed;
