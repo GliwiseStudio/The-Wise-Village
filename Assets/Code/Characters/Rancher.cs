@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class Rancher : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
+    [SerializeField] private Animator _animator;
     private Cow _cow;
     private bool _isCowHungry = false;
     private bool _hasCowMilk = false;
@@ -19,6 +20,7 @@ public class Rancher : MonoBehaviour
 
     private Locator _locator;
     private MovementController _movementController;
+    private RancherAnimationHandler _animationsHandler;
 
     private bool _hasFoodFromFeeders = false;
     private bool _hasMilkToCollect = false;
@@ -31,6 +33,7 @@ public class Rancher : MonoBehaviour
         _locator = FindObjectOfType<Locator>();
         NavMeshAgent navMeshAgent = GetComponent<NavMeshAgent>();
         _movementController = new MovementController(navMeshAgent, _configuration, new Vector3(4, 0, -10));
+        _animationsHandler = new RancherAnimationHandler(_animator);
 
         CreateAI();
     }
@@ -127,6 +130,7 @@ public class Rancher : MonoBehaviour
         LoopDecoratorNode infiniteLoop = _rancherBT.CreateLoopNode("InfiniteLoop", selector);
 
         _rancherBT.SetRootNode(infiniteLoop);
+        Debug.Log("asjdsdk");
     }
 
     private ReturnValues IsInBarn()
@@ -215,6 +219,8 @@ public class Rancher : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         _hasFoodFromFeeders = false;
+        _isCowHungry = false;
+        _cow.Feed();
     }
 
     private ReturnValues AreCowsWithMilk()
@@ -322,9 +328,15 @@ public class Rancher : MonoBehaviour
 
     private void Update()
     {
+        _rancherBT.Update();
+
         _storeMilkSubStateMachine.Update();
         _feedCowsSubStateMachine.Update();
-        _rancherBT.Update();
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log(_rancherBT.GetCurrentState().Name);
+        }
     }
 
     private void OnEnable()

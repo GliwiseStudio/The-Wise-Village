@@ -525,8 +525,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a0630488af39e4eb6030ae9f831e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _generateMilkFromBeingFedTime: 5
-  _becomeHungryTime: 7
+  _generateMilkFromBeingFedTime: 7
+  _becomeHungryTime: 5
 --- !u!1 &1153792546
 GameObject:
   m_ObjectHideFlags: 0
