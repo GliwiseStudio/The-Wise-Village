@@ -14,4 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _placesOfInterest:
   - _name: Establo
-    _position: {x: 11.14993, y: 1.99, z: 24.50785}
+    _position: {x: 6, y: 1, z: -10}
+  - _name: Almacen
+    _position: {x: -9, y: 1, z: -1}
+  - _name: Comederos
+    _position: {x: -15, y: 1, z: -20}

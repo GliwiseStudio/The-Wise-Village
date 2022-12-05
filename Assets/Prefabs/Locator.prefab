@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _configuration: {fileID: 11400000, guid: 5e84c5f88eba1d54e9b0e69006befca3, type: 2}
-  _distanceRange: 0.5
+  _distanceRange: 2.5

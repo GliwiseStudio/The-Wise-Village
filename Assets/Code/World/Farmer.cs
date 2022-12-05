@@ -15,6 +15,8 @@ public class Farmer : MonoBehaviour
 
     private void CreateAI()
     {
+        _farmerBT = new BehaviourTreeEngine();
+
         //SECUENCIA 1
         LeafNode sowWheatLeafNode = _farmerBT.CreateLeafNode("SowWheat", SowWheat, SowWheatCheck);
         SucceederDecoratorNode sowWheatSucceeder = _farmerBT.CreateSucceederNode("SowWheatSucceeder", sowWheatLeafNode);
@@ -45,6 +47,7 @@ public class Farmer : MonoBehaviour
         LeafNode generatedWheatLeafNode = _farmerBT.CreateLeafNode("GeneratedWheat", null, IsWheatGenerated);
 
         StateMachineEngine reapWheatStateMachine = new StateMachineEngine(true);
+        LeafNode reapWheatLeafNode = _farmerBT.CreateSubBehaviour("ReapWheatStateMachine", reapWheatStateMachine);
 
         //PERCEPCIONES
         ValuePerception hasReapAnimationFinishedPerception = reapWheatStateMachine.CreatePerception<ValuePerception>(HasReapAnimationFinished);
@@ -64,7 +67,6 @@ public class Farmer : MonoBehaviour
         reapWheatStateMachine.CreateTransition("StoreWheat-MoveCountryside", storeWheatState, isInStoragePerception, moveToCountrysideState);
         reapWheatStateMachine.CreateExitTransition("MoveCountryside-Exit", storeWheatState, isInCountrysidePerception, ReturnValues.Succeed);
 
-        LeafNode reapWheatLeafNode = _farmerBT.CreateSubBehaviour("ReapWheatStateMachine", reapWheatStateMachine);
         SucceederDecoratorNode reapWheatSucceder = _farmerBT.CreateSucceederNode("ReapWheatSucceeder", reapWheatLeafNode);
 
         SequenceNode reapWheatSequence = _farmerBT.CreateSequenceNode("ReapWheatSequence", false);
@@ -79,7 +81,8 @@ public class Farmer : MonoBehaviour
         selector.AddChild(reapWheatSequence);
 
         //LOOP INFINITO
-        _farmerBT.CreateLoopNode("LoopInfinito", selector);
+        LoopDecoratorNode rootLoop = _farmerBT.CreateLoopNode("LoopInfinito", selector);
+        _farmerBT.SetRootNode(rootLoop);
     }
 
     private ReturnValues IsInCountryside()

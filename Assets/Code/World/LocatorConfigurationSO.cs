@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Locator/Locator Configuration", fileName = "LocatorConfigurationSO")]
 public class LocatorConfigurationSO : ScriptableObject
 {
     [SerializeField] private List<PlaceOfInterest> _placesOfInterest;
-    private IDictionary<string, Vector3> _placesOfInteresStorage;
+    private IDictionary<string, PlaceOfInterest> _placesOfInteresStorage;
 
-    private void Awake()
+    public void Initialize()
     {
         InitializeStorage();
     }
 
     private void InitializeStorage()
     {
-        _placesOfInteresStorage = new Dictionary<string, Vector3>();
+        _placesOfInteresStorage = new Dictionary<string, PlaceOfInterest>();
 
         foreach (PlaceOfInterest place in _placesOfInterest)
         {
-            bool addedSuccesfully = _placesOfInteresStorage.TryAdd(place.Name, place.Position);
+            bool addedSuccesfully = _placesOfInteresStorage.TryAdd(place.Name, place);
 
 #if UNITY_EDITOR
             if(!addedSuccesfully)
@@ -32,8 +33,21 @@ public class LocatorConfigurationSO : ScriptableObject
 
     public Vector3 GetPlaceOfInterestPositionFromName(string name)
     {
-        Vector3 returnPosition;
-        _placesOfInteresStorage.TryGetValue(name, out returnPosition);
-        return returnPosition;
+        PlaceOfInterest returnPlaceOfInterest;
+        _placesOfInteresStorage.TryGetValue(name, out returnPlaceOfInterest);
+
+        Assert.IsNotNull(returnPlaceOfInterest, $"[LocatorConfigurationSO at GetPlaceOfInterestPositionFromName] : The place of interest called {name} could not be found");
+
+        return returnPlaceOfInterest.Position;
+    }
+
+    public float GetPlaceOfInterestRangeOffsetFromName(string name)
+    {
+        PlaceOfInterest returnPlaceOfInterest;
+        _placesOfInteresStorage.TryGetValue(name, out returnPlaceOfInterest);
+
+        Assert.IsNotNull(returnPlaceOfInterest, $"[LocatorConfigurationSO at GetPlaceOfInterestRangeOffsetFromName] : The place of interest called {name} could not be found");
+
+        return returnPlaceOfInterest.DistanceOffset;
     }
 }
