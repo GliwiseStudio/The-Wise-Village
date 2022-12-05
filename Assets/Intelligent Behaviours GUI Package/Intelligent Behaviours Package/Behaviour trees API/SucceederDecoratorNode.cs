@@ -27,7 +27,7 @@ public class SucceederDecoratorNode : TreeNode {
 
     public override void Update()
     {
-        if (!firstExecution) { ToChild(); firstExecution = true; }; // First loop goes to child
+        if (!firstExecution) { ToChild(); firstExecution = false; }; // First loop goes to child
         if (Child.ReturnValue != ReturnValues.Running) {
             if(ReturnNodeValue() != ReturnValues.Running) {
                 ReturnToParent();
