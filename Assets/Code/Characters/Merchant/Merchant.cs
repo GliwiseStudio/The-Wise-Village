@@ -35,6 +35,12 @@ public class Merchant : MonoBehaviour
     private void Update()
     {
         _merchantBT.Update();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log(_merchantBT.GetCurrentState().Name);
+        }
+        
     }
 
     #region Listeners
@@ -63,8 +69,9 @@ public class Merchant : MonoBehaviour
 
         interactWithSuppliesSN.AddChild(hasSuppliesLN);
         interactWithSuppliesSN.AddChild(makeBreadLN);
-
-        LoopDecoratorNode waitForSuppliesDN = _merchantBT.CreateLoopNode("waitForSuppliesDN", interactWithSuppliesSN);
+        
+        // not necesarry because it will be running until it gets it
+        //LoopUntilSucceedDecoratorNode waitForSuppliesDN = _merchantBT.CreateLoopUntilSucceedNode("waitForSuppliesDN", interactWithSuppliesSN);
 
         // Sequence to get supplies
         LeafNode walkToCarrierLN = _merchantBT.CreateLeafNode("walkToCarrierLN", WalkToCarrier, ArrivedToCarrier);
@@ -76,9 +83,8 @@ public class Merchant : MonoBehaviour
         getSuppliesSN.AddChild(walkToCarrierLN);
         getSuppliesSN.AddChild(talkToCarrierLN);
         getSuppliesSN.AddChild(walkBackToShopLN);
-        getSuppliesSN.AddChild(waitForSuppliesDN);
+        getSuppliesSN.AddChild(interactWithSuppliesSN);
 
-        // CONCEPTUALMENTE ES UN SUCCEDER PERO WENO, NO LO HE METIDO PQ LITERALLY Q EL RESTO NO PUEDEN FALLAR
 
         // Sequence to check if we have supplies, and if not get them
         LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckCounterState);
@@ -152,11 +158,13 @@ public class Merchant : MonoBehaviour
     {
         if (_milk == 0 || _bread == 0)
         {
+            // the carrier has not given delivered the supplies yet, still running
             Debug.Log("Still no supplies");
-            return ReturnValues.Failed;
+            return ReturnValues.Running;
         }
         else
         {
+            // now we've got supplies, that means that they've been delivered, so we can return a succeed and go on with the code to serve some customers
             Debug.Log("Gotten supplies");
             return ReturnValues.Succeed;
         }
@@ -178,7 +186,7 @@ public class Merchant : MonoBehaviour
             _milk--;
             _bread--;
             // tell client it has been served, still to implement
-            Debug.Log("served customer");
+            Debug.Log("served customer. Milk left: " + _milk + " Bread left: " + _bread);
             return ReturnValues.Succeed;
         }
         else
@@ -211,12 +219,14 @@ public class Merchant : MonoBehaviour
     #region Walks
     private void WalkBackToShop()
     {
+        _animator.Play("Walk");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
     private ReturnValues WalkedToShop()
     {
         if(_locator.IsCharacterInPlace(transform.position, "Shop") == true)
         {
+            _animator.Play("Idle");
             return ReturnValues.Succeed;
         }
         else
@@ -227,12 +237,14 @@ public class Merchant : MonoBehaviour
 
     private void WalkToCarrier()
     {
+        _animator.Play("Walk");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
     private ReturnValues ArrivedToCarrier()
     {
         if (_locator.IsCharacterInPlace(transform.position, "CarrierPlace") == true)
         {
+            _animator.Play("Idle");
             return ReturnValues.Succeed;
         }
         else

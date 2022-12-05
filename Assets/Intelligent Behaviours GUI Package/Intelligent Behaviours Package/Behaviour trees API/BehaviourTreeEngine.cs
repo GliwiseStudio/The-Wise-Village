@@ -199,14 +199,14 @@ public class BehaviourTreeEngine : BehaviourEngine {
     /// <param name="name">The name of the node</param>
     /// <param name="child">The child of the node</param>
     /// <returns></returns>
-    public LoopUntilFailDecoratorNode CreateLoopUntilFailNode(string name, TreeNode child)
+    public LoopUntilSucceedDecoratorNode CreateLoopUntilSucceedNode(string name, TreeNode child)
     {
         if(!states.ContainsKey(name)) {
-            LoopUntilFailDecoratorNode loopUntilFailNode = new LoopUntilFailDecoratorNode(name, child, this);
-            BTnodes.Add(loopUntilFailNode);
-            states.Add(name, loopUntilFailNode.StateNode);
+            LoopUntilSucceedDecoratorNode loopUntilSucceedNode = new LoopUntilSucceedDecoratorNode(name, child, this);
+            BTnodes.Add(loopUntilSucceedNode);
+            states.Add(name, loopUntilSucceedNode.StateNode);
 
-            return loopUntilFailNode;
+            return loopUntilSucceedNode;
         }
         else {
             throw new DuplicateWaitObjectException(name, "The node already exists in the behaviour tree");
