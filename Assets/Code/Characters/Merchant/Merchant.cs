@@ -31,7 +31,7 @@ public class Merchant : MonoBehaviour
         
         _animationsHandler = new MerchantAnimationsHandler(_animator);
         _suppliesManager = FindObjectOfType<Supplies>();
-        _targetDetector = new TargetDetector(transform, 5f, "Villager");
+        _targetDetector = new TargetDetector(transform, 5f, "Client");
         
         CreateAI();
     }

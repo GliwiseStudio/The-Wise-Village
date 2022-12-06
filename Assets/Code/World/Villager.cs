@@ -7,7 +7,7 @@ public class Villager : MonoBehaviour, IShop
 {
     [SerializeField] CharacterConfigurationSO _configuration;
     [SerializeField] private float minRandomSeconds = 0;
-    [SerializeField] private float maxRandomSeconds = 10;
+    [SerializeField] private float maxRandomSeconds = 30;
     private Animator _animator;
     private VillagerAnimationsHandler _animationsHandler;
     private BehaviourTreeEngine _villagerBT;
@@ -70,7 +70,7 @@ public class Villager : MonoBehaviour, IShop
         LeafNode isThirstyLeafNode = _villagerBT.CreateLeafNode("IsThirsty", DoNothing, IsThirsty);
         LeafNode goToWellLeafNode = _villagerBT.CreateLeafNode("GoToWell", GoToWell, ArrivedToWell);
         LeafNode getWaterLeafNode = _villagerBT.CreateLeafNode("GetWater", GetWater, GottenWater);
-        LeafNode goDrinkLeafNode = _villagerBT.CreateLeafNode("GoDrink", GoToHouse, ArrivedToHouseWithWater);
+        LeafNode goDrinkLeafNode = _villagerBT.CreateLeafNode("GoDrink", DrinkWater, DrankWater);
 
         SequenceNode isThirstySequence = _villagerBT.CreateSequenceNode("isThirstySequence", false);
         isThirstySequence.AddChild(isThirstyLeafNode);
@@ -94,8 +94,6 @@ public class Villager : MonoBehaviour, IShop
         _villagerBT.SetRootNode(rootLoop);
         #endregion
     }
-
-    
 
     #region Checks
     private void DoNothing() {}
@@ -140,6 +138,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_animationsHandler.GetWaterSuccesfully())
         {
+            Debug.Log("done getting water");
             return ReturnValues.Succeed;
         }
         else
@@ -159,8 +158,9 @@ public class Villager : MonoBehaviour, IShop
 
     private ReturnValues GottenProducts()
     {
-        if (_animationsHandler.GetProductsSuccesfully() == true)
+        if (_animationsHandler.GetProductsSuccesfully())
         {
+            Debug.Log("Done getting products");
             return ReturnValues.Succeed;
         }
         else
@@ -237,17 +237,17 @@ public class Villager : MonoBehaviour, IShop
 
     #endregion
 
-    #region Go to house
-    private void GoToHouse()
+    #region Drink water
+    private void DrinkWater()
     {
-        //_animationsHandler.PlayAnimationState("Walk", 0.1f);
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("House"));
+        Debug.Log("Drinking water");
+        _animationsHandler.PlayAnimationState("Drink", 0.1f);
     }
-    private ReturnValues ArrivedToHouseWithWater()
+    private ReturnValues DrankWater()
     {
-        if (_locator.IsCharacterInPlace(transform.position, "House") == true)
+        if (_animationsHandler.GetDrankSuccesfully())
         {
-            _animator.Play("Idle");
+            Debug.Log("Done drinking");
             _isThirsty = false;
             StartCoroutine(GetThirsty());
             return ReturnValues.Succeed;
@@ -256,6 +256,14 @@ public class Villager : MonoBehaviour, IShop
         {
             return ReturnValues.Running;
         }
+    }
+    #endregion
+
+    #region Go to house
+    private void GoToHouse()
+    {
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("House"));
     }
 
     private ReturnValues ArrivedToHouseWithFood()
@@ -274,7 +282,7 @@ public class Villager : MonoBehaviour, IShop
     }
     #endregion
 
-    // not implemented random walks, it walks to house right now
+    // not implemented random walks, it walks to well right now
     #region Walk
     private void Walk()
     {
