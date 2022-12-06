@@ -18,6 +18,7 @@ public class Merchant : MonoBehaviour
     [SerializeField] private int _bread = 3;
 
     private NavMeshAgent _navMeshAgent;
+    private TargetDetector _targetDetector;
 
     #endregion
 
@@ -30,6 +31,7 @@ public class Merchant : MonoBehaviour
         
         _animationsHandler = new MerchantAnimationsHandler(_animator);
         _suppliesManager = FindObjectOfType<Supplies>();
+        _targetDetector = new TargetDetector(transform, 5f, "Client");
         
         CreateAI();
     }
@@ -43,10 +45,10 @@ public class Merchant : MonoBehaviour
     {
         _merchantBT.Update();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(_merchantBT.GetCurrentState().Name);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    Debug.Log(_merchantBT.GetCurrentState().Name);
+        //}
         
     }
 
@@ -145,7 +147,16 @@ public class Merchant : MonoBehaviour
     private void DoNothing() { }
     private ReturnValues CheckForClients()
     {
-        return ReturnValues.Succeed;
+        GameObject client = _targetDetector.DetectTargetGameObject();
+        if (client != null)
+        {
+            client.GetComponent<IShop>().Shop();
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Failed;
+        }
         // still have to implement this, suceed temporary just to see if it works
     }
 
@@ -184,7 +195,7 @@ public class Merchant : MonoBehaviour
     private void ServeCustomer()
     {
         Debug.Log("serve customer");
-        _animator.Play("Sell");
+        _animationsHandler.PlayAnimationState("Sell", 0.1f);
     }
 
     private ReturnValues ServedCustomer()
@@ -207,7 +218,7 @@ public class Merchant : MonoBehaviour
     #region Talk to vendor
     private void TalkToCarrier()
     {
-        _animator.Play("Talk");
+        _animationsHandler.PlayAnimationState("Talk", 0.1f);
     }
 
     private ReturnValues TalkedToCarrier()
@@ -227,14 +238,14 @@ public class Merchant : MonoBehaviour
     #region Walks
     private void WalkBackToShop()
     {
-        _animator.Play("Walk");
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
     private ReturnValues WalkedToShop()
     {
         if(_locator.IsCharacterInPlace(transform.position, "Shop") == true)
         {
-            _animator.Play("Idle");
+            _animationsHandler.PlayAnimationState("Idle", 0.1f);
             return ReturnValues.Succeed;
         }
         else
@@ -245,14 +256,14 @@ public class Merchant : MonoBehaviour
 
     private void WalkToCarrier()
     {
-        _animator.Play("Walk");
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
     private ReturnValues ArrivedToCarrier()
     {
         if (_locator.IsCharacterInPlace(transform.position, "CarrierPlace") == true)
         {
-            _animator.Play("Idle");
+            _animationsHandler.PlayAnimationState("Idle", 0.1f);
             return ReturnValues.Succeed;
         }
         else
