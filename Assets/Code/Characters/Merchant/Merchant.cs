@@ -278,7 +278,7 @@ public class Merchant : MonoBehaviour
     private void InteractWithSupplies()
     {
         Debug.Log("interacting w supllies");
-        //_animator.Play("InteractWithSupplies");
+        _animationsHandler.PlayAnimationState("InteractWithSupplies", 0.1f);
     }
 
     private ReturnValues InteractedWithSupplies()
