@@ -181,6 +181,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_hasBeenServed)
         {
+            _movementController.ContinueMovement();
             _hasBeenServed = false; // reset for next time
             gameObject.layer = LayerMask.NameToLayer("Villager");
             return ReturnValues.Succeed;
@@ -204,6 +205,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_locator.IsCharacterInPlace(transform.position, "Shop") == true)
         {
+            _movementController.StopMovement();
             _animator.Play("Idle");
             return ReturnValues.Succeed;
         }
