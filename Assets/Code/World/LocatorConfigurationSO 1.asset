@@ -15,7 +15,13 @@ MonoBehaviour:
   _placesOfInterest:
   - _name: Establo
     _position: {x: 6, y: 1, z: -10}
+    _distanceOffset: 2.5
   - _name: Almacen
     _position: {x: -9, y: 1, z: -1}
+    _distanceOffset: 2.5
   - _name: Comederos
     _position: {x: -15, y: 1, z: -20}
+    _distanceOffset: 2.5
+  - _name: Countryside
+    _position: {x: 15, y: 1, z: 8}
+    _distanceOffset: 2.5

@@ -1,13 +1,18 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Farmer : MonoBehaviour
 {
+    [SerializeField] private CharacterConfigurationSO _configuration;
     [SerializeField] private Animator _animator;
     private FarmerAnimationsHandler _animationsHandler;
     private BehaviourTreeEngine _farmerBT;
     private StateMachineEngine _reapWheatSubStateMachine;
     private Locator _locator;
+    private MovementController _movementController;
+    private NavMeshAgent _agent;
 
     private Wheat _wheat;
     private bool _isWheatSowed = false;
@@ -24,6 +29,8 @@ public class Farmer : MonoBehaviour
         _wheat = FindObjectOfType<Wheat>();
         _animationsHandler = new FarmerAnimationsHandler(_animator);
         _locator = FindObjectOfType<Locator>();
+        _agent = GetComponent<NavMeshAgent>();
+        _movementController = new MovementController(_agent, _configuration, new Vector3(13.25f, 1.21f, 7.45f));
         CreateAI();
     }
 
@@ -104,7 +111,19 @@ public class Farmer : MonoBehaviour
 
     private ReturnValues IsInCountryside()
     {
-        return ReturnValues.Succeed;
+        if(IsCharacterInCountryside())
+        {
+            return ReturnValues.Succeed;
+        }
+        else
+        {
+            return ReturnValues.Running;
+        }
+    }
+
+    private bool IsCharacterInCountryside()
+    {
+        return _locator.IsCharacterInPlace(transform.position, "Countryside");
     }
 
     private ReturnValues IsWheatSowed()
@@ -122,6 +141,7 @@ public class Farmer : MonoBehaviour
     private void SowWheat()
     {
         Debug.Log("Sow Wheat");
+        _animationsHandler.PlayAnimationState("SowWheat", 0.1f);
         StartCoroutine(SowWheatCycle());
     }
 
@@ -158,6 +178,7 @@ public class Farmer : MonoBehaviour
     private void WaterWheat()
     {
         Debug.Log("Water Wheat");
+        _animationsHandler.PlayAnimationState("waterWheat", 0.1f);
         StartCoroutine(WaterWheatCycle());
     }
 
@@ -203,17 +224,18 @@ public class Farmer : MonoBehaviour
 
     private bool IsInStoragePerception()
     {
-        return true;
+        return _locator.IsCharacterInPlace(transform.position, "Storage");
     }
 
     private bool IsInCountrysidePerception()
     {
-        return true;
+        return IsCharacterInCountryside();
     }
 
     private void ReapWheat()
     {
         Debug.Log("Reap Wheat");
+        _animationsHandler.PlayAnimationState("ReapWheat", 0.1f);
         StartCoroutine(ReapWheatCycle());
     }
 
@@ -228,6 +250,8 @@ public class Farmer : MonoBehaviour
     private void MoveToStorage()
     {
         Debug.Log("Moving To Storage");
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
 
     private void StoreWheat()
@@ -246,6 +270,8 @@ public class Farmer : MonoBehaviour
     private void MoveToCountryside()
     {
         Debug.Log("Moving To Countryside");
+        _animationsHandler.PlayAnimationState("Walk", 0.1f);
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Countryside"));
     }
 
     private void DoNothing()
