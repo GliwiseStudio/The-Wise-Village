@@ -25,6 +25,16 @@ public class MovementController
         _navMeshAgent.SetDestination(position);
     }
 
+    public void StopMovement()
+    {
+        _navMeshAgent.isStopped = true;
+    }
+
+    public void ContinueMovement()
+    {
+        _navMeshAgent.isStopped = false;
+    }
+
     private void WarpToPosition(Vector3 position)
     {
         _navMeshAgent.Warp(position);
