@@ -126,17 +126,17 @@ public class Carrier : MonoBehaviour
     {
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         Debug.Log("Voy al almacen");
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Almacen"));
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
 
     bool ComprobarEstaEnAlmacen()
     {
-        if (_locator.IsCharacterInPlace(transform.position, "Almacen")) 
+        if (_locator.IsCharacterInPlace(transform.position, "Storage")) 
         {
             _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
         }
         //Debug.Log("Estoy de camino al almacen");
-        return _locator.IsCharacterInPlace(transform.position, "Almacen");
+        return _locator.IsCharacterInPlace(transform.position, "Storage");
     }
 
     void MoverseTienda()
