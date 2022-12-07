@@ -194,9 +194,9 @@ public class Carrier : MonoBehaviour
     }
 
     //ARBOL
-    ReturnValues ComprobarLeche() 
+    ReturnValues ComprobarLeche()
     {
-        return ReturnValues.Succeed;
+        Debug.Log("Leche comprobada");
         if (_warehouse.HasMilk())
         {
             return ReturnValues.Succeed;
@@ -205,12 +205,10 @@ public class Carrier : MonoBehaviour
         {
             return ReturnValues.Running;
         }
-        Debug.Log("Leche comprobada");
     }
 
     ReturnValues ComprobarTrigo()
     {
-        return ReturnValues.Succeed;
         if (_warehouse.HasWheat())
         {
             return ReturnValues.Succeed;

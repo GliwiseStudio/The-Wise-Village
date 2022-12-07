@@ -15,13 +15,16 @@ MonoBehaviour:
   _placesOfInterest:
   - _name: Shop
     _position: {x: -7, y: 0, z: -6}
-    _distanceOffset: 1.9
+    _distanceOffset: 4
+  - _name: Bar
+    _position: {x: -8, y: 0, z: -8}
+    _distanceOffset: 1.3
   - _name: CarrierPlace
     _position: {x: 14, y: 0, z: -3}
     _distanceOffset: 1.5
   - _name: Storage
     _position: {x: 24, y: 0, z: -6}
-    _distanceOffset: 1.88
+    _distanceOffset: 2.18
   - _name: Barn
     _position: {x: 40, y: 0, z: -21}
     _distanceOffset: 2
@@ -30,4 +33,10 @@ MonoBehaviour:
     _distanceOffset: 2
   - _name: Countryside
     _position: {x: 39, y: 0, z: 13}
+    _distanceOffset: 2
+  - _name: House
+    _position: {x: -9, y: 0, z: -31}
+    _distanceOffset: 2
+  - _name: Well
+    _position: {x: 31, y: 0, z: 21}
     _distanceOffset: 2

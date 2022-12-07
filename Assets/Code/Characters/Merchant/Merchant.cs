@@ -38,7 +38,7 @@ public class Merchant : MonoBehaviour
 
     private void Start()
     {
-        _movementController = new MovementController(_navMeshAgent, _configuration, _locator.GetPlaceOfInterestPositionFromName("Shop"));
+        _movementController = new MovementController(_navMeshAgent, _configuration, _locator.GetPlaceOfInterestPositionFromName("Bar"));
     }
 
     private void Update()
@@ -239,11 +239,11 @@ public class Merchant : MonoBehaviour
     private void WalkBackToShop()
     {
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
+        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Bar"));
     }
     private ReturnValues WalkedToShop()
     {
-        if(_locator.IsCharacterInPlace(transform.position, "Shop") == true)
+        if(_locator.IsCharacterInPlace(transform.position, "Bar") == true)
         {
             _animationsHandler.PlayAnimationState("Idle", 0.1f);
             return ReturnValues.Succeed;
