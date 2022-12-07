@@ -39,6 +39,6 @@ public class Warehouse : MonoBehaviour
     public void AddMilk(int value)
     {
         Assert.IsTrue(value >= 0);
-        _wheat += value;
+        _milk += value;
     }
 }
