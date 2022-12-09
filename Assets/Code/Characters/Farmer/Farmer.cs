@@ -146,7 +146,7 @@ public class Farmer : MonoBehaviour
 
     private void SowWheat()
     {
-        Debug.Log("Sow Wheat");
+        //Debug.Log("Sow Wheat");
         _animationsHandler.PlayAnimationState("SowWheat", 0.1f);
         StartCoroutine(SowWheatCycle());
     }
@@ -183,7 +183,7 @@ public class Farmer : MonoBehaviour
 
     private void WaterWheat()
     {
-        Debug.Log("Water Wheat");
+        //Debug.Log("Water Wheat");
         _animationsHandler.PlayAnimationState("WaterWheat", 0.1f);
         StartCoroutine(WaterWheatCycle());
     }
@@ -240,7 +240,7 @@ public class Farmer : MonoBehaviour
 
     private void ReapWheat()
     {
-        Debug.Log("Reap Wheat");
+        //Debug.Log("Reap Wheat");
         _animationsHandler.PlayAnimationState("ReapWheat", 0.1f);
         StartCoroutine(ReapWheatCycle());
     }
@@ -255,14 +255,14 @@ public class Farmer : MonoBehaviour
 
     private void MoveToStorage()
     {
-        Debug.Log("Moving To Storage");
+        //Debug.Log("Moving To Storage");
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
 
     private void StoreWheat()
     {
-        Debug.Log("Store Wheat");
+        //Debug.Log("Store Wheat");
         StartCoroutine(StoreWheatCycle());
     }
 
@@ -276,7 +276,7 @@ public class Farmer : MonoBehaviour
 
     private void MoveToCountryside()
     {
-        Debug.Log("Moving To Countryside");
+        //Debug.Log("Moving To Countryside");
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Countryside"));
     }
@@ -290,7 +290,7 @@ public class Farmer : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.A))
         {
-            Debug.Log(_farmerBT.GetCurrentState().Name);
+            //Debug.Log(_farmerBT.GetCurrentState().Name);
         }
 
         _farmerBT.Update();

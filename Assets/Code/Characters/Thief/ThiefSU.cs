@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,6 +11,8 @@ public class ThiefSU : MonoBehaviour
 	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private UtilitySystemEngine _thiefSU;
+	private BehaviourTreeEngine _thiefBT;
+	private StateMachineEngine _thiefSM;
 	private MovementController _movementController;
 	private NavMeshAgent _agent;
 	private WaypointsController _waypointsController;
@@ -25,17 +28,30 @@ public class ThiefSU : MonoBehaviour
 	private Vector3 _currentWaypoint = Vector3.zero;
 
 	private bool _isPatrolling = false;
+	private bool _isEscaping = false;
+	private bool _updateIsInShop = false;
+	private bool _updateHasStealed = false;
 
 	private void Awake()
 	{
-		_targetDetector = new TargetDetector(transform, 3f, "Police");
+		_targetDetector = new TargetDetector(transform, 10f, "Police");
 		_animationsHandler = new ThiefAnimationsHandler(_animator);
 		_agent = GetComponent<NavMeshAgent>();
-		_movementController = new MovementController(_agent, _configuration, Vector3.zero);
+		_movementController = new MovementController(_agent, _configuration, new Vector3(0, 1.6f, 0));
 		_locator = FindObjectOfType<Locator>();
 		_waypointsController = FindObjectOfType<WaypointsController>();
 		_supplies = FindObjectOfType<Supplies>();
 		CreateAI();
+	}
+
+	private void OnEnable()
+	{
+		_supplies.OnMerchantIsInShop += SetIsMerchantInShop;
+	}
+
+	private void OnDisable()
+	{
+		_supplies.OnMerchantIsInShop -= SetIsMerchantInShop;
 	}
 
 	private void CreateAI()
@@ -46,7 +62,7 @@ public class ThiefSU : MonoBehaviour
 		Factor hunger = new LeafVariable(() => _timeWithoutEating, _maximumTimeWithoutEating, 0f);
 		List<Point2D> points = new List<Point2D>();
 		points.Add(new Point2D(0, 0));
-		points.Add(new Point2D(0.2f, 0.8f));
+		points.Add(new Point2D(0.5f, 0.8f));
 		points.Add(new Point2D(1, 1));
 		Factor hungerParts = new LinearPartsCurve(hunger, points);
 
@@ -54,10 +70,10 @@ public class ThiefSU : MonoBehaviour
 		Factor pursue = new LeafVariable(() => (_hasBeenSeenByThePolice) ? 1f : 0f, 1f, 0f);
 
 		//Factor vendedor cerca
-		Factor isMerchantClose = new LeafVariable(() => (_isMerchantClose) ? 1f : 0f, 1f, 0f);
+		Factor isMerchantClose = new LeafVariable(() => (_isMerchantClose) ? 0f : 1f, 1f, 0f);
 
 		//Factor policía cerca
-		Factor isPoliceClose = new LeafVariable(() => (_isPoliceClose) ? 1f : 0f, 1f, 0f);
+		Factor isPoliceClose = new LeafVariable(() => (_isPoliceClose) ? 0f : 1f, 1f, 0f);
 
 		//Factor peligro
 		Factor danger = new MinFusion(new List<Factor> {isMerchantClose, isPoliceClose});
@@ -68,52 +84,181 @@ public class ThiefSU : MonoBehaviour
 		//Factor ganas de robarn't
 		Factor stealingDesirent = new InvertWeightFactor(stealingDesire);
 
-		_thiefSU.CreateUtilityAction("Steal", Steal, stealingDesire);
+		// Subarbol
+		//_thiefBT = new BehaviourTreeEngine(false);
+		//LeafNode goToShopLN = _thiefBT.CreateLeafNode("goToShopLN", GoToShop, IsInShop);
+		//LeafNode stealLN = _thiefBT.CreateLeafNode("stealLN", Steal, HasStealed);
+
+		//SequenceNode stealShopSN = _thiefBT.CreateSequenceNode("stealShopSN", false);
+		//stealShopSN.AddChild(goToShopLN);
+		//stealShopSN.AddChild(stealLN);
+
+		//BehaviourTreeStatusPerception perception = _thiefBT.CreatePerception<BehaviourTreeStatusPerception>(HasStealed);
+
+		//_thiefBT.CreateExitTransition("Exit_Transition", stealLN, perception, _thiefSU);
+
+		// SUBMAQUINA DE ESTADOS
+		_thiefSM = new StateMachineEngine(StateMachineEngine.IsASubmachine);
+
+		State goToShopState = _thiefSM.CreateState("goToShopState", GoToShop);
+		State stealState = _thiefSM.CreateState("stealState", Steal);
+		State exitState = _thiefSM.CreateState("exitState", Exit);
+
+		Perception inShopPerception = _thiefSM.CreatePerception<ValuePerception>(IsInShop);
+		Perception stealedPerception = _thiefSM.CreatePerception<ValuePerception>(HasStealed);
+		Perception nothingPerception = _thiefSM.CreatePerception<ValuePerception>(Nothing);
+
+		_thiefSM.CreateTransition("shop-steal", goToShopState, inShopPerception, stealState);
+		_thiefSM.CreateTransition("steal-exit", stealState, stealedPerception, exitState);
+		_thiefSU.CreateSubBehaviour("name", stealingDesire, _thiefSM, goToShopState);
+		_thiefSM.CreateExitTransition("Exit_Transition", exitState, nothingPerception, _thiefSU);
+
+		// MAIN UTILITY
+
+		//_thiefSU.CreateUtilityAction("Steal", stealingDesire, ReturnValues.Succeed, _thiefBT);
 		_thiefSU.CreateUtilityAction("Patrol", Patrol, stealingDesirent);
 		_thiefSU.CreateUtilityAction("Escape", Escape, pursue);
 	}
-
-	private void Steal()
-    {
-		Debug.Log("Steal");
-    }
-
-	private void Patrol()
-    {
-		Debug.Log("Patrol");
-		_isPatrolling = true;
-		MoveToCurrentWaypoint();
-	}
-
-	private void MoveToCurrentWaypoint()
-	{
-		_currentWaypoint = _waypointsController.GetRandomWaypoint("Thief");
-		_movementController.MoveToPosition(_currentWaypoint);
-	}
-
-	private void Escape()
-    {
-		Debug.Log("Me voy");
-    }
 
     private void Update()
     {
 		DetectEnemies();
 
-		if(_isPatrolling)
+		if(_isPatrolling || _isEscaping)
         {
-			CheckPatrol();
+			CheckIfItHasArrivedToPoint();
         }
 
-
 		_timeWithoutEating += Time.deltaTime;
-		if(_timeWithoutEating >= _maximumTimeWithoutEating)
+		if (_timeWithoutEating >= _maximumTimeWithoutEating)
         {
 			_timeWithoutEating = _maximumTimeWithoutEating;
         }
 
-		_thiefSU.Update();
+        if (!_hasBeenKnockedDownByPolice)
+        {
+            _thiefSU.Update();
+			_thiefSM.Update();
+        }
+
     }
+
+	#region Patrol // Escape
+	private void Patrol()
+	{
+		_animationsHandler.PlayAnimationState("Walk", 0.1f);
+		Debug.Log("Thief: Patrol");
+		_isEscaping = false;
+		_isPatrolling = true;
+		_agent.speed = _configuration.MovementSpeed;
+		MoveToCurrentWaypoint();
+	}
+
+	private void Escape()
+	{
+		_animationsHandler.PlayAnimationState("Run", 0.1f);
+		Debug.Log("Thief: Me voy");
+		_isEscaping = true;
+		_isPatrolling = false;
+		_agent.speed *= 2;
+		MoveToCurrentWaypoint();
+	}
+
+	private void MoveToCurrentWaypoint()
+	{
+		if (_isEscaping)
+        {
+			_currentWaypoint = _waypointsController.GetRandomWaypoint("ThiefEscaping");
+		}
+        else{
+			_currentWaypoint = _waypointsController.GetRandomWaypoint("Thief");
+		}
+		
+		_movementController.MoveToPosition(_currentWaypoint);
+	}
+
+	private void CheckIfItHasArrivedToPoint()
+	{
+		if (_waypointsController.IsCharacterInPlace(transform.position, _currentWaypoint))
+		{
+			MoveToCurrentWaypoint();
+		}
+	}
+
+    #endregion
+
+    #region Steal
+    private void Exit()
+    {
+        
+    }
+
+	private bool Nothing()
+    {
+		return true;
+    }
+    private void GoToShop()
+    {
+		_animationsHandler.PlayAnimationState("Walk", 0.1f);
+		_movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
+		_isPatrolling = false;
+		_isEscaping = false;
+		_updateIsInShop = true;
+	}
+
+	private bool IsInShop()
+	{
+		if (_locator.IsCharacterInPlace(transform.position, "Shop"))
+		{
+			_updateIsInShop = false;
+			_updateHasStealed = true;
+			Debug.Log("Is in shop");
+			return true;
+        }
+        else
+        {
+			return false;
+        }
+	}
+
+	private void Steal()
+    {
+		Debug.Log("IS STEALING");
+		_animationsHandler.PlayAnimationState("Steal", 0.1f);
+		_movementController.Stop();
+		
+		gameObject.layer = LayerMask.NameToLayer("Thief");
+		// empty supplies
+		int milk = _supplies.GetMilk();
+		int wheat = _supplies.GetWheat();
+		Debug.Log("milk: " + milk + " whate: " + wheat);
+
+		if (milk != 0 || wheat != 0)
+		{
+			Debug.Log("thief: ate");
+			_timeWithoutEating = 0;
+		}
+	}
+	
+
+	private bool HasStealed()
+    {
+		if (_animationsHandler.GetStealSuccesfully())
+		{
+			gameObject.layer = LayerMask.NameToLayer("Villager");
+			_updateHasStealed = false;
+			Debug.Log("stealed succesfully");
+			return true;
+        }
+        else
+        {
+			return false;
+        }
+	}
+
+	#endregion
+
+	#region Detect enemies
 
 	private void DetectEnemies()
     {
@@ -127,25 +272,9 @@ public class ThiefSU : MonoBehaviour
 		}
     }
 
-	private void CheckPatrol()
-    {
-		if(_waypointsController.IsCharacterInPlace(transform.position, _currentWaypoint))
-        {
-			MoveToCurrentWaypoint();
-		}
-    }
+    #endregion
 
-	private void OnEnable()
-	{
-		_supplies.OnMerchantIsInShop += SetIsMerchantInShop;
-	}
-
-	private void OnDisable()
-	{
-		_supplies.OnMerchantIsInShop -= SetIsMerchantInShop;
-	}
-
-	private void SetIsMerchantInShop(bool status)
+    private void SetIsMerchantInShop(bool status)
     {
 		_isMerchantClose = status;
 	}
@@ -155,8 +284,27 @@ public class ThiefSU : MonoBehaviour
 		_hasBeenSeenByThePolice = hasBeenSeen;
 	}
 
-	public void HasBeenKnockedDown()
+	public void HasBeenCaught()
     {
+		Debug.Log("thief: HAS BEEN CAUGHT");
+
+		_movementController.Stop();
+
 		_hasBeenKnockedDownByPolice = true;
-    }
+
+		_isEscaping = false;
+
+		// SHOULD PLAY ANIMATION
+
+		StartCoroutine(KnockedDown());
+	}
+
+
+	IEnumerator KnockedDown()
+    {
+		yield return new WaitForSeconds(1);
+		Debug.Log("thief: back to business");
+		_hasBeenSeenByThePolice = false;
+		_hasBeenKnockedDownByPolice = false;
+	}
 }

@@ -14,9 +14,6 @@ public class Merchant : MonoBehaviour
     private MovementController _movementController;
     [SerializeField] private CharacterConfigurationSO _configuration;
 
-    [SerializeField] private int _milk = 3;
-    [SerializeField] private int _bread = 3;
-
     private NavMeshAgent _navMeshAgent;
     private TargetDetector _targetDetector;
 
@@ -52,19 +49,6 @@ public class Merchant : MonoBehaviour
         
     }
 
-    #region Listeners
-    private void OnEnable()
-    {
-        _suppliesManager.OnDelivery += UpdateSuppliesInfo;
-    }
-
-    private void OnDisable()
-    {
-        _suppliesManager.OnDelivery -= UpdateSuppliesInfo;
-    }
-
-    #endregion
-
     private void CreateAI()
     {
         _merchantBT = new BehaviourTreeEngine();
@@ -96,7 +80,7 @@ public class Merchant : MonoBehaviour
 
 
         // Sequence to check if we have supplies, and if not get them
-        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckCounterState);
+        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckCounter);
 
         SequenceNode checkSuppliesSN = _merchantBT.CreateSequenceNode("checkSuppliesSN", false);
 
@@ -135,14 +119,6 @@ public class Merchant : MonoBehaviour
         #endregion
     }
 
-    private void UpdateSuppliesInfo() // on delivery event
-    {
-        Debug.Log("updatedSuppliesInfo");
-        _milk += _suppliesManager.GetMilk();
-        _bread += _suppliesManager.GetWheat();
-        Debug.Log("milk: " + _milk + " wheat: " + _bread);
-    }
-
     #region Checks
     private void DoNothing() { }
     private ReturnValues CheckForClients()
@@ -157,26 +133,24 @@ public class Merchant : MonoBehaviour
         {
             return ReturnValues.Failed;
         }
-        // still have to implement this, suceed temporary just to see if it works
     }
 
-    private ReturnValues CheckCounterState()
+    private ReturnValues CheckCounter()
     {
-        if (_milk == 0 || _bread == 0)
+        if (!_suppliesManager.IsThereMilkLeft() && !_suppliesManager.IsThereWheatLeft())
         {
-            Debug.Log("no things");
-            return ReturnValues.Succeed;
+            return ReturnValues.Failed;
         }
         else
         {
-            Debug.Log("has things");
-            return ReturnValues.Failed;
+            // now we've got supplies, that means that they've been delivered, so we can return a succeed and go on with the code to serve some customers
+            return ReturnValues.Succeed;
         }
     }
 
     private ReturnValues CheckSupplies()
     {
-        if (_milk == 0 || _bread == 0)
+        if (!_suppliesManager.IsThereMilkLeft() && !_suppliesManager.IsThereWheatLeft())
         {
             // the carrier has not delivered the supplies yet, still running
             return ReturnValues.Running;
@@ -184,7 +158,6 @@ public class Merchant : MonoBehaviour
         else
         {
             // now we've got supplies, that means that they've been delivered, so we can return a succeed and go on with the code to serve some customers
-            Debug.Log("Gotten supplies");
             return ReturnValues.Succeed;
         }
     }
@@ -194,7 +167,7 @@ public class Merchant : MonoBehaviour
     #region Serve Customer
     private void ServeCustomer()
     {
-        Debug.Log("serve customer");
+        //Debug.Log("serve customer");
         _animationsHandler.PlayAnimationState("Sell", 0.1f);
     }
 
@@ -202,10 +175,9 @@ public class Merchant : MonoBehaviour
     {
         if (_animationsHandler.GetSellSuccesfully() == true)
         {
-            _milk--;
-            _bread--;
+            _suppliesManager.MerchantGet();
             // tell client it has been served, still to implement
-            Debug.Log("served customer. Milk left: " + _milk + " Bread left: " + _bread);
+            //Debug.Log("served customer. Milk left: " + _milk + " Bread left: " + _bread);
             return ReturnValues.Succeed;
         }
         else
@@ -243,7 +215,7 @@ public class Merchant : MonoBehaviour
     }
     private ReturnValues WalkedToShop()
     {
-        if(_locator.IsCharacterInPlace(transform.position, "Bar") == true)
+        if(_locator.IsCharacterInPlace(transform.position, "Bar"))
         {
             _animationsHandler.PlayAnimationState("Idle", 0.1f);
             _suppliesManager.SetIsMerchantInShop(true);
@@ -279,7 +251,7 @@ public class Merchant : MonoBehaviour
     #region Interact with supplies
     private void InteractWithSupplies()
     {
-        Debug.Log("interacting w supllies");
+        //Debug.Log("interacting w supllies");
         _animationsHandler.PlayAnimationState("InteractWithSupplies", 0.1f);
     }
 
@@ -287,12 +259,12 @@ public class Merchant : MonoBehaviour
     {
         if (_animationsHandler.GetInteractWithSuppliesSuccesfully() == true)
         {
-            Debug.Log("interacted w supplies succesfully");
+            //Debug.Log("interacted w supplies succesfully");
             return ReturnValues.Succeed;
         }
         else
         {
-            Debug.Log("still doing animation");
+            //Debug.Log("still doing animation");
             return ReturnValues.Running;
         }
     }
