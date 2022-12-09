@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class Supplies : MonoBehaviour
 {
+    public event Action<bool> OnMerchantIsInShop;
     public event Action OnDelivery;
     public event Action OnDemand;
     private int _milk = 0;
     private int _wheat = 0;
+
+    public void SetIsMerchantInShop(bool status)
+    {
+        OnMerchantIsInShop?.Invoke(status);
+    }
 
     public int GetMilk()
     {
