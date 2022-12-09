@@ -6,8 +6,8 @@ public class Supplies : MonoBehaviour
     public event Action<bool> OnMerchantIsInShop;
     public event Action OnDelivery;
     public event Action OnDemand;
-    private int _milk = 0;
-    private int _wheat = 0;
+    [SerializeField] private int _milk = 3;
+    [SerializeField] private int _wheat = 1;
 
     public void SetIsMerchantInShop(bool status)
     {
@@ -38,5 +38,27 @@ public class Supplies : MonoBehaviour
     public void Demand()
     {
         OnDemand?.Invoke();
+    }
+
+    public bool IsThereMilkLeft()
+    {
+        if (_milk > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public bool IsThereWheatLeft()
+    {
+        if (_wheat > 0)
+            return true;
+        else
+            return false;
+    }
+
+    public void MerchantGet()
+    {
+        _wheat--;
+        _milk--;
     }
 }

@@ -112,7 +112,7 @@ public class Carrier : MonoBehaviour
 
     void EsperarSolicitud() 
     {
-        Debug.Log("Estado inicial de esperar");
+        //Debug.Log("Estado inicial de esperar");
         _carrieAnimatorHandler.PlayAnimationState("Sitting", 0.1f);
         Invoke("GirarPersonaje", 1f);
     }
@@ -125,7 +125,7 @@ public class Carrier : MonoBehaviour
     void MoverseAlmacen() 
     {
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
-        Debug.Log("Voy al almacen");
+        //Debug.Log("Voy al almacen");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
 
@@ -141,14 +141,14 @@ public class Carrier : MonoBehaviour
 
     void MoverseTienda()
     {
-        Debug.Log("Voy a la tienda");
+        //Debug.Log("Voy a la tienda");
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
 
     bool ComprobarEstaEnTienda()
     {
-        Debug.Log("Estoy de camino a la tienda");
+        //Debug.Log("Estoy de camino a la tienda");
         if(_locator.IsCharacterInPlace(transform.position, "Shop"))
         {
             _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
@@ -159,12 +159,12 @@ public class Carrier : MonoBehaviour
     void EntregarSuministro()
     {
         _carrieAnimatorHandler.PlayAnimationState("GiveItems", 0.1f);
-        Debug.Log("Se ha entregado los suministros");
+        //Debug.Log("Se ha entregado los suministros");
     }
 
     bool ComprobarEntregaSuministros()
     {
-        Debug.Log("Suministros entregados check");
+        //Debug.Log("Suministros entregados check");
         if (_carrieAnimatorHandler.GiveItemsSuccesfully())
         {
             _supplies.Deliver(_milk, _wheat);
@@ -178,7 +178,7 @@ public class Carrier : MonoBehaviour
 
     void MoversePuesto()
     {
-        Debug.Log("Voy al puesto");
+        //Debug.Log("Voy al puesto");
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
@@ -196,7 +196,7 @@ public class Carrier : MonoBehaviour
     //ARBOL
     ReturnValues ComprobarLeche()
     {
-        Debug.Log("Leche comprobada");
+        //Debug.Log("Leche comprobada");
         if (_warehouse.HasMilk())
         {
             return ReturnValues.Succeed;
@@ -222,7 +222,7 @@ public class Carrier : MonoBehaviour
     void RecogerSuministro() 
     {
         _carrieAnimatorHandler.PlayAnimationState("GrabObject", 0.1f);
-        Debug.Log("Suministros recogido");
+        //Debug.Log("Suministros recogido");
         _milk = _warehouse.GetMilk();
         _wheat = _warehouse.GetWheat();
     }

@@ -153,7 +153,7 @@ public class Rancher : MonoBehaviour
 
     private ReturnValues AreCowsHungry()
     {
-        Debug.Log("Check if cow is hungry");
+        //Debug.Log("Check if cow is hungry");
         if(_isCowHungry)
         {
             return ReturnValues.Succeed;
@@ -181,19 +181,19 @@ public class Rancher : MonoBehaviour
 
     private bool IsCharacterInBarn()
     {
-        Debug.Log("Checking if is in barn");
+        //Debug.Log("Checking if is in barn");
         return _locator.IsCharacterInPlace(transform.position, "Barn");
     }
     
     private bool AreCowsFedPerception()
     {
-        Debug.Log("Are Cows Fed " + _hasFoodFromFeeders);
+        //Debug.Log("Are Cows Fed " + _hasFoodFromFeeders);
         return !_hasFoodFromFeeders;
     }
 
     private void MoveToFeeders()
     {
-        Debug.Log("Move To feeders");
+        //Debug.Log("Move To feeders");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Feeders"));
         PlayWalkAnimation();
     }
@@ -205,7 +205,7 @@ public class Rancher : MonoBehaviour
     
     private void CollectFood()
     {
-        Debug.Log("Collecting food from feeders");
+        //Debug.Log("Collecting food from feeders");
         StartCoroutine(CollectFoodCoroutine());
     }
 
@@ -217,14 +217,14 @@ public class Rancher : MonoBehaviour
 
     private void MoveToBarn()
     {
-        Debug.Log("Moving To Barn");
+        //Debug.Log("Moving To Barn");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Barn"));
         PlayWalkAnimation();
     }
 
     private void FeedCows()
     {
-        Debug.Log("Feeding Cows");
+        //Debug.Log("Feeding Cows");
         PlayFeedAnimation();
         StartCoroutine(FeedingCows());
     }
@@ -239,7 +239,7 @@ public class Rancher : MonoBehaviour
 
     private ReturnValues AreCowsWithMilk()
     {
-        Debug.Log("Check if cows have milk");
+        //Debug.Log("Check if cows have milk");
         if(_hasCowMilk)
         {
             return ReturnValues.Succeed;
@@ -252,7 +252,7 @@ public class Rancher : MonoBehaviour
 
     private void MilkCows()
     {
-        Debug.Log("Milking Cow");
+        //Debug.Log("Milking Cow");
         _isMilkingCows = true;
         PlayMilkAnimation();
         StartCoroutine(MilkingCows());
@@ -291,25 +291,25 @@ public class Rancher : MonoBehaviour
 
     private bool IsMilkCollected()
     {
-        Debug.Log("Checking if milk is collected");
+        //Debug.Log("Checking if milk is collected");
         return !_hasMilkToCollect;
     }
 
     private bool IsInStorage()
     {
-        Debug.Log("Checking if is in storage");
+        //Debug.Log("Checking if is in storage");
         return _locator.IsCharacterInPlace(transform.position, "Storage");
     }
 
     private bool IsMilkStored()
     {
-        Debug.Log("Checking if milk is stored");
+        //Debug.Log("Checking if milk is stored");
         return !_hasMilkFromCows;
     }
 
     private void CollectMilk()
     {
-        Debug.Log("CollectingMilk");
+        //Debug.Log("CollectingMilk");
         StartCoroutine(CollectingMilk());
     }
 
@@ -322,14 +322,14 @@ public class Rancher : MonoBehaviour
 
     private void MoveToStorage()
     {
-        Debug.Log("Moving To Storage");
+        //Debug.Log("Moving To Storage");
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
         PlayWalkAnimation();
     }
 
     private void StoreMilk()
     {
-        Debug.Log("Storing Milk");
+        //Debug.Log("Storing Milk");
         StartCoroutine(StoringMilk());
     }
 
@@ -351,7 +351,7 @@ public class Rancher : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log(_rancherBT.GetCurrentState().Name);
+            //Debug.Log(_rancherBT.GetCurrentState().Name);
         }
     }
 

@@ -39,11 +39,6 @@ public class Villager : MonoBehaviour, IShop
     private void Update()
     {
         _villagerBT.Update();
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log(_villagerBT.GetCurrentState().Name);
-        }
     }
 
     // Update is called once per frame
@@ -102,12 +97,12 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_isHungry)
         {
-            Debug.Log("HUNGRY");
+            //Debug.Log("HUNGRY");
             return ReturnValues.Succeed;
         }
         else
         {
-            Debug.Log("NOT HUNGRY");
+            //Debug.Log("NOT HUNGRY");
             return ReturnValues.Failed;
         }
         
@@ -116,12 +111,12 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_isThirsty)
         {
-            Debug.Log("THIRSTY");
+            //Debug.Log("THIRSTY");
             return ReturnValues.Succeed;
         }
         else
         {
-            Debug.Log("NOT THIRSTY");
+            //Debug.Log("NOT THIRSTY");
             return ReturnValues.Failed;
         }
     }
@@ -130,7 +125,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get water
     private void GetWater()
     {
-        Debug.Log("getting water");
+        //Debug.Log("getting water");
         _animationsHandler.PlayAnimationState("GetWater", 0.1f);
     }
 
@@ -138,7 +133,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_animationsHandler.GetWaterSuccesfully())
         {
-            Debug.Log("done getting water");
+            //Debug.Log("done getting water");
             return ReturnValues.Succeed;
         }
         else
@@ -152,7 +147,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get products from vendor
     private void GetProducts()
     {
-        Debug.Log("getting products");
+        //Debug.Log("getting products");
         _animationsHandler.PlayAnimationState("GetProducts", 0.1f);
     }
 
@@ -160,7 +155,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_animationsHandler.GetProductsSuccesfully())
         {
-            Debug.Log("Done getting products");
+            //Debug.Log("Done getting products");
             return ReturnValues.Succeed;
         }
         else
@@ -242,14 +237,14 @@ public class Villager : MonoBehaviour, IShop
     #region Drink water
     private void DrinkWater()
     {
-        Debug.Log("Drinking water");
+        //Debug.Log("Drinking water");
         _animationsHandler.PlayAnimationState("Drink", 0.1f);
     }
     private ReturnValues DrankWater()
     {
         if (_animationsHandler.GetDrankSuccesfully())
         {
-            Debug.Log("Done drinking");
+            //Debug.Log("Done drinking");
             _isThirsty = false;
             StartCoroutine(GetThirsty());
             return ReturnValues.Succeed;
@@ -288,7 +283,7 @@ public class Villager : MonoBehaviour, IShop
     #region Walk
     private void Walk()
     {
-        Debug.Log("Walk randomly");
+        //Debug.Log("Walk randomly");
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Well"));
         // it should move to a random position each time, like take random walks, still to implement

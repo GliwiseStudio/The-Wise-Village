@@ -18,12 +18,12 @@ public class Police : MonoBehaviour
 
 	private TargetDetector _targetDetector;
 	private GameObject _thiefGameObject;
-	private Transform _thiefTransform;
 
 	private Vector3 _currentWaypoint;
 
 	private bool _isPatrolling = false;
 	private bool _followingThief = false;
+	private bool _seenForTheFirstTime = true;
 
 
 	private void Awake()
@@ -84,9 +84,9 @@ public class Police : MonoBehaviour
 	#region Patrol related methods
 	private void PatrollingToPoint()
 	{
-		Debug.Log("PATROLLING TO A POINT");
-
-        _animationsHandler.PlayAnimationState("Walk", 0.1f);
+		Debug.Log("police: patrol");
+		_seenForTheFirstTime = true;
+		_animationsHandler.PlayAnimationState("Walk", 0.1f);
         _agent.speed = _configuration.MovementSpeed;
 
         MoveToRandomWaypoint();
@@ -111,9 +111,10 @@ public class Police : MonoBehaviour
     #region See thief
     private bool SeenThief()
 	{
-		if(_targetDetector.DetectTarget() != null)
+		if(_seenForTheFirstTime && _targetDetector.DetectTarget() != null)
         {
-			Debug.Log("SEEN THIEF");
+			_seenForTheFirstTime = false;
+			Debug.Log("Police: seen thief");
 
 			_thiefGameObject = _targetDetector.DetectTargetGameObject();
 			_thiefGameObject.GetComponent<ThiefSU>().IsBeingSeenByPolice(true);
@@ -133,9 +134,6 @@ public class Police : MonoBehaviour
 	{
 		if (_animationsHandler.GetPunchSuccesfully())
         {
-			_thiefGameObject.GetComponent<ThiefSU>().IsBeingSeenByPolice(false);
-			_thiefGameObject = null;
-
 			return true;
         }
         else
@@ -147,7 +145,7 @@ public class Police : MonoBehaviour
 	private void Knocking()
 	{
 		_animationsHandler.PlayAnimationState("Punch", 0.1f);
-		Debug.Log("Le hago la animacon de knockear");
+		Debug.Log("Police: Le hago la animacon de knockear");
 
 		_agent.speed = _configuration.MovementSpeed;
 
@@ -158,9 +156,11 @@ public class Police : MonoBehaviour
     #region Catch / Loose thief
     private bool HaveCatchedTheThief()
     {
-		if (Vector3.Distance(_thiefGameObject.transform.position, transform.position) < 0.1f) 
+		if (_thiefGameObject != null && Vector3.Distance(_thiefGameObject.transform.position, transform.position) < 3f) 
 		{
 			_followingThief = false;
+			_thiefGameObject.GetComponent<ThiefSU>().HasBeenCaught();
+			_thiefGameObject = null;
 			return true;
 		}
 		else return false;
@@ -187,10 +187,10 @@ public class Police : MonoBehaviour
     #region Follow thief
     private void FollowThief()
 	{
-		Debug.Log("FOLLOWING THIEF");
+		Debug.Log("Police: follow thief");
 		_followingThief = true;
 
-		_agent.SetDestination(_thiefTransform.position);
+		_agent.SetDestination(_thiefGameObject.transform.position);
 
 		_animationsHandler.PlayAnimationState("Run", 0.1f);
 
@@ -199,7 +199,7 @@ public class Police : MonoBehaviour
 
 	private void GoToThief()
 	{
-		_agent.SetDestination(_thiefTransform.position);
+		_agent.SetDestination(_thiefGameObject.transform.position);
 	}
 
 	#endregion

@@ -5,6 +5,7 @@ public class WaypointsController : MonoBehaviour
 {
     [SerializeField] private List<Transform> _policeWaypoints;
     [SerializeField] private List<Transform> _thiefWaypoints;
+    [SerializeField] private List<Transform> _thiefEscapingWaypoints;
 
     private void Awake()
     {
@@ -12,15 +13,18 @@ public class WaypointsController : MonoBehaviour
 
     public Vector3 GetRandomWaypoint(string type)
     {
-        if(type.CompareTo("Thief") == 0)
+        int index = 0;
+        switch (type)
         {
-            int index = Random.Range(0, _thiefWaypoints.Count);
-            return _thiefWaypoints[index].position;
-        } 
-        else if(type.CompareTo("Police") == 0)
-        {
-            int index = Random.Range(0, _policeWaypoints.Count);
-            return _policeWaypoints[index].position;
+            case "Thief":
+                index = Random.Range(0, _thiefWaypoints.Count);
+                return _thiefWaypoints[index].position;
+            case "Police":
+                index = Random.Range(0, _policeWaypoints.Count);
+                return _policeWaypoints[index].position;
+            case "ThiefEscaping":
+                index = Random.Range(0, _thiefEscapingWaypoints.Count);
+                return _thiefEscapingWaypoints[index].position;
         }
 
         return Vector3.zero;
