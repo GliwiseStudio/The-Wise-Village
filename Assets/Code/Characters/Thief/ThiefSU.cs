@@ -11,8 +11,8 @@ public class ThiefSU : MonoBehaviour
 	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private UtilitySystemEngine _thiefSU;
-	private StateMachineEngine _thiefFSM;
 	private BehaviourTreeEngine _thiefBT;
+	private StateMachineEngine _thiefSM;
 	private MovementController _movementController;
 	private NavMeshAgent _agent;
 	private WaypointsController _waypointsController;
@@ -84,9 +84,38 @@ public class ThiefSU : MonoBehaviour
 		//Factor ganas de robarn't
 		Factor stealingDesirent = new InvertWeightFactor(stealingDesire);
 
+		// Subarbol
+		//_thiefBT = new BehaviourTreeEngine(false);
+		//LeafNode goToShopLN = _thiefBT.CreateLeafNode("goToShopLN", GoToShop, IsInShop);
+		//LeafNode stealLN = _thiefBT.CreateLeafNode("stealLN", Steal, HasStealed);
 
-        // MAIN UTILITY
-        _thiefSU.CreateUtilityAction("Steal", Steal, stealingDesire);
+		//SequenceNode stealShopSN = _thiefBT.CreateSequenceNode("stealShopSN", false);
+		//stealShopSN.AddChild(goToShopLN);
+		//stealShopSN.AddChild(stealLN);
+
+		//BehaviourTreeStatusPerception perception = _thiefBT.CreatePerception<BehaviourTreeStatusPerception>(HasStealed);
+
+		//_thiefBT.CreateExitTransition("Exit_Transition", stealLN, perception, _thiefSU);
+
+		// SUBMAQUINA DE ESTADOS
+		_thiefSM = new StateMachineEngine(StateMachineEngine.IsASubmachine);
+
+		State goToShopState = _thiefSM.CreateState("goToShopState", GoToShop);
+		State stealState = _thiefSM.CreateState("stealState", Steal);
+		State exitState = _thiefSM.CreateState("exitState", Exit);
+
+		Perception inShopPerception = _thiefSM.CreatePerception<ValuePerception>(IsInShop);
+		Perception stealedPerception = _thiefSM.CreatePerception<ValuePerception>(HasStealed);
+		Perception nothingPerception = _thiefSM.CreatePerception<ValuePerception>(Nothing);
+
+		_thiefSM.CreateTransition("shop-steal", goToShopState, inShopPerception, stealState);
+		_thiefSM.CreateTransition("steal-exit", stealState, stealedPerception, exitState);
+		_thiefSU.CreateSubBehaviour("name", stealingDesire, _thiefSM, goToShopState);
+		_thiefSM.CreateExitTransition("Exit_Transition", exitState, nothingPerception, _thiefSU);
+
+		// MAIN UTILITY
+
+		//_thiefSU.CreateUtilityAction("Steal", stealingDesire, ReturnValues.Succeed, _thiefBT);
 		_thiefSU.CreateUtilityAction("Patrol", Patrol, stealingDesirent);
 		_thiefSU.CreateUtilityAction("Escape", Escape, pursue);
 	}
@@ -109,6 +138,7 @@ public class ThiefSU : MonoBehaviour
         if (!_hasBeenKnockedDownByPolice)
         {
             _thiefSU.Update();
+			_thiefSM.Update();
         }
 
     }
@@ -158,6 +188,15 @@ public class ThiefSU : MonoBehaviour
     #endregion
 
     #region Steal
+    private void Exit()
+    {
+        
+    }
+
+	private bool Nothing()
+    {
+		return true;
+    }
     private void GoToShop()
     {
 		_animationsHandler.PlayAnimationState("Walk", 0.1f);
