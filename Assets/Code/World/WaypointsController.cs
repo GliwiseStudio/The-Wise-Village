@@ -3,18 +3,11 @@ using UnityEngine;
 
 public class WaypointsController : MonoBehaviour
 {
-    private List<Transform> _waypoints;
+    [SerializeField] private List<Transform> _policeWaypoints;
     [SerializeField] private List<Transform> _thiefWaypoints;
 
     private void Awake()
     {
-        _waypoints = new List<Transform>(GetComponentsInChildren<Transform>());
-    }
-
-    public Vector3 GetRandomWaypoint()
-    {
-        int index = Random.Range(0, _waypoints.Count);
-        return _waypoints[index].position;
     }
 
     public Vector3 GetRandomWaypoint(string type)
@@ -23,6 +16,11 @@ public class WaypointsController : MonoBehaviour
         {
             int index = Random.Range(0, _thiefWaypoints.Count);
             return _thiefWaypoints[index].position;
+        } 
+        else if(type.CompareTo("Police") == 0)
+        {
+            int index = Random.Range(0, _policeWaypoints.Count);
+            return _policeWaypoints[index].position;
         }
 
         return Vector3.zero;

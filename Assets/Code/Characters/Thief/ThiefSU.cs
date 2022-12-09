@@ -7,7 +7,7 @@ public class ThiefSU : MonoBehaviour
 {
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterConfigurationSO _configuration;
-	private ThiefAnimationsHanlder _animationsHandler;
+	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private UtilitySystemEngine _thiefSU;
 	private MovementController _movementController;
@@ -18,6 +18,7 @@ public class ThiefSU : MonoBehaviour
 	private float _timeWithoutEating = 0f;
 	private float _maximumTimeWithoutEating = 30f;
 	private bool _hasBeenSeenByThePolice = false;
+	private bool _hasBeenKnockedDownByPolice = false;
 	private bool _isMerchantClose = false;
 	private bool _isPoliceClose = false;
 	private TargetDetector _targetDetector;
@@ -28,7 +29,7 @@ public class ThiefSU : MonoBehaviour
 	private void Awake()
 	{
 		_targetDetector = new TargetDetector(transform, 3f, "Police");
-		_animationsHandler = new ThiefAnimationsHanlder(_animator);
+		_animationsHandler = new ThiefAnimationsHandler(_animator);
 		_agent = GetComponent<NavMeshAgent>();
 		_movementController = new MovementController(_agent, _configuration, Vector3.zero);
 		_locator = FindObjectOfType<Locator>();
@@ -148,4 +149,14 @@ public class ThiefSU : MonoBehaviour
     {
 		_isMerchantClose = status;
 	}
+
+	public void IsBeingSeenByPolice(bool hasBeenSeen)
+	{
+		_hasBeenSeenByThePolice = hasBeenSeen;
+	}
+
+	public void HasBeenKnockedDown()
+    {
+		_hasBeenKnockedDownByPolice = true;
+    }
 }

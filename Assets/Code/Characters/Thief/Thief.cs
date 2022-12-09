@@ -7,7 +7,7 @@ public class Thief : MonoBehaviour
 {
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterConfigurationSO _configuration;
-	private ThiefAnimationsHanlder _animationsHandler;
+	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private StateMachineEngine _stealFSM;
 	private MovementController _movementController;
@@ -21,7 +21,7 @@ public class Thief : MonoBehaviour
 
 	private void Awake()
 	{
-		_animationsHandler = new ThiefAnimationsHanlder(_animator);
+		_animationsHandler = new ThiefAnimationsHandler(_animator);
 		_agent = GetComponent<NavMeshAgent>();
 		_movementController = new MovementController(_agent, _configuration, Vector3.zero);
 		_locator = FindObjectOfType<Locator>();
@@ -143,7 +143,7 @@ public class Thief : MonoBehaviour
 
 	private void MoveToRandomWaypoint()
 	{
-		_currentWaypoint = _waypointsController.GetRandomWaypoint();
+		_currentWaypoint = _waypointsController.GetRandomWaypoint("Thief");
 		_movementController.MoveToPosition(_currentWaypoint);
 	}
 
