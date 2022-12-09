@@ -246,6 +246,7 @@ public class Merchant : MonoBehaviour
         if(_locator.IsCharacterInPlace(transform.position, "Bar") == true)
         {
             _animationsHandler.PlayAnimationState("Idle", 0.1f);
+            _suppliesManager.SetIsMerchantInShop(true);
             return ReturnValues.Succeed;
         }
         else
@@ -256,6 +257,7 @@ public class Merchant : MonoBehaviour
 
     private void WalkToCarrier()
     {
+        _suppliesManager.SetIsMerchantInShop(false);
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
