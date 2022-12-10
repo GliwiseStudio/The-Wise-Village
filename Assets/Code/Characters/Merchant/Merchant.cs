@@ -28,7 +28,7 @@ public class Merchant : MonoBehaviour
         
         _animationsHandler = new MerchantAnimationsHandler(_animator);
         _suppliesManager = FindObjectOfType<Supplies>();
-        _targetDetector = new TargetDetector(transform, 5f, "Client");
+        _targetDetector = new TargetDetector(transform, 10f, "Client");
         
         CreateAI();
     }
@@ -80,7 +80,7 @@ public class Merchant : MonoBehaviour
 
 
         // Sequence to check if we have supplies, and if not get them
-        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckCounter);
+        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckIfCounterEmpty);
 
         SequenceNode checkSuppliesSN = _merchantBT.CreateSequenceNode("checkSuppliesSN", false);
 
@@ -126,7 +126,7 @@ public class Merchant : MonoBehaviour
         GameObject client = _targetDetector.DetectTargetGameObject();
         if (client != null)
         {
-            client.GetComponent<IShop>().Shop();
+            client.GetComponent<IShop>().Shop(); // tell client it is being attended
             return ReturnValues.Succeed;
         }
         else
@@ -135,15 +135,15 @@ public class Merchant : MonoBehaviour
         }
     }
 
-    private ReturnValues CheckCounter()
+    private ReturnValues CheckIfCounterEmpty()
     {
-        if (!_suppliesManager.IsThereMilkLeft() && !_suppliesManager.IsThereWheatLeft())
+        if (_suppliesManager.IsThereMilkLeft() && _suppliesManager.IsThereWheatLeft())
         {
+            // Counter ain't empty
             return ReturnValues.Failed;
         }
         else
         {
-            // now we've got supplies, that means that they've been delivered, so we can return a succeed and go on with the code to serve some customers
             return ReturnValues.Succeed;
         }
     }
@@ -167,17 +167,15 @@ public class Merchant : MonoBehaviour
     #region Serve Customer
     private void ServeCustomer()
     {
-        //Debug.Log("serve customer");
         _animationsHandler.PlayAnimationState("Sell", 0.1f);
+        _suppliesManager.GetOneMilk();
+        _suppliesManager.GetOneWheat();
     }
 
     private ReturnValues ServedCustomer()
     {
         if (_animationsHandler.GetSellSuccesfully() == true)
         {
-            _suppliesManager.MerchantGet();
-            // tell client it has been served, still to implement
-            //Debug.Log("served customer. Milk left: " + _milk + " Bread left: " + _bread);
             return ReturnValues.Succeed;
         }
         else

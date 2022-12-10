@@ -20,7 +20,7 @@ public class ThiefSU : MonoBehaviour
 	private Supplies _supplies;
 
 	private float _timeWithoutEating = 0f;
-	private float _maximumTimeWithoutEating = 30f;
+	[SerializeField] private float _maximumTimeWithoutEating = 30f;
 	private bool _hasBeenSeenByThePolice = false;
 	private bool _hasBeenKnockedDownByPolice = false;
 	private bool _isMerchantClose = false;
@@ -108,12 +108,7 @@ public class ThiefSU : MonoBehaviour
 		_thiefSU.CreateUtilityAction("Escape", Escape, pursue);
 	}
 
-	private void StealAction()
-    {
-		Debug.Log("Voy a robar");
-		_thiefSM.Reset();
-		_isStealing = true;
-    }
+	
 
     private void Update()
     {
@@ -124,15 +119,15 @@ public class ThiefSU : MonoBehaviour
 			CheckIfItHasArrivedToPoint();
         }
 
-		_timeWithoutEating += Time.deltaTime;
-		if (_timeWithoutEating >= _maximumTimeWithoutEating)
-        {
-			_timeWithoutEating = _maximumTimeWithoutEating;
-        }
-
         if (!_hasBeenKnockedDownByPolice)
         {
-			if(!_isStealing)
+			_timeWithoutEating += Time.deltaTime;
+			if (_timeWithoutEating >= _maximumTimeWithoutEating)
+			{
+				_timeWithoutEating = _maximumTimeWithoutEating;
+			}
+
+			if (!_isStealing)
 			{
 				_thiefSU.Update();
 			}
@@ -186,12 +181,18 @@ public class ThiefSU : MonoBehaviour
 		}
 	}
 
-    #endregion
+	#endregion
 
-    #region Steal
+	#region Steal
+	private void StealAction() // to go to the submachine (because it isn't really a submachine)
+	{
+		Debug.Log("Voy a robar");
+		_thiefSM.Reset();
+		_isStealing = true;
+	}
+
 	private void GoToShop()
     {
-		Debug.Log("Going to shop");
 		_animationsHandler.PlayAnimationState("Walk", 0.1f);
 		_movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("ShopThief"));
 		_isPatrolling = false;
@@ -205,7 +206,6 @@ public class ThiefSU : MonoBehaviour
 		{
 			_updateIsInShop = false;
 			_updateHasStealed = true;
-			Debug.Log("Is in shop");
 			transform.LookAt(_shopTransformLookAt, Vector3.up);
 			return true;
         }
@@ -217,16 +217,23 @@ public class ThiefSU : MonoBehaviour
 
 	private void Steal()
     {
-		Debug.Log("IS STEALING");
 		_animationsHandler.PlayAnimationState("Steal", 0.1f);
 		_movementController.Stop();
 		
 		gameObject.layer = LayerMask.NameToLayer("Thief");
 
-		_supplies.MerchantGet();
+		// steal one supply of each (if there are any)
+        if (_supplies.IsThereMilkLeft())
+        {
+			_supplies.GetOneMilk();
+        }
+        if (_supplies.IsThereWheatLeft())
+        {
+			_supplies.GetOneWheat();
+        }
 
+		// reset time without eating (even if it hasn't tried to steal)
 		_timeWithoutEating = 0;
-		
 	}
 	
 
@@ -266,6 +273,7 @@ public class ThiefSU : MonoBehaviour
 
     #endregion
 
+    #region Recieved changes from other characters
     private void SetIsMerchantInShop(bool status)
     {
 		_isMerchantClose = status;
@@ -276,7 +284,10 @@ public class ThiefSU : MonoBehaviour
 		_hasBeenSeenByThePolice = hasBeenSeen;
 	}
 
-	public void HasBeenCaught()
+    #endregion
+
+    #region Being caught/defeated
+    public void HasBeenCaught()
     {
 		Debug.Log("thief: HAS BEEN CAUGHT");
 
@@ -292,7 +303,6 @@ public class ThiefSU : MonoBehaviour
 		StartCoroutine(KnockedDown());
 	}
 
-
 	IEnumerator KnockedDown()
     {
 		yield return new WaitForSeconds(5);
@@ -301,4 +311,5 @@ public class ThiefSU : MonoBehaviour
 		_hasBeenKnockedDownByPolice = false;
 		_movementController.ContinueMovement();
 	}
+    #endregion
 }
