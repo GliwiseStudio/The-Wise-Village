@@ -14,6 +14,8 @@ public class Villager : MonoBehaviour, IShop
     private Locator _locator;
     private MovementController _movementController;
     private NavMeshAgent _navMeshAgent;
+    private Vector3 _currentWaypoint;
+    private WaypointsController _waypointsController;
 
     private bool _isHungry = false;
     private bool _isThirsty = false;
@@ -25,6 +27,7 @@ public class Villager : MonoBehaviour, IShop
         _animator = GetComponent<Animator>();
         _animationsHandler = new VillagerAnimationsHandler(_animator);
         _locator = FindObjectOfType<Locator>();
+        _waypointsController = FindObjectOfType<WaypointsController>();
 
         CreateAI();
     }
@@ -279,18 +282,22 @@ public class Villager : MonoBehaviour, IShop
     }
     #endregion
 
-    // not implemented random walks, it walks to well right now
-    #region Walk
+    #region Walk randomly
     private void Walk()
     {
-        //Debug.Log("Walk randomly");
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Well"));
-        // it should move to a random position each time, like take random walks, still to implement
+        MoveToRandomWaypoint();
     }
+
+    private void MoveToRandomWaypoint()
+    {
+        _currentWaypoint = _waypointsController.GetRandomWaypoint("Villager");
+        _movementController.MoveToPosition(_currentWaypoint);
+    }
+
     private ReturnValues WalkCheck()
     {
-        if (_locator.IsCharacterInPlace(transform.position, "Well") == true)
+        if (_waypointsController.IsCharacterInPlace(transform.position, _currentWaypoint))
         {
             _animator.Play("Idle");
             return ReturnValues.Succeed;

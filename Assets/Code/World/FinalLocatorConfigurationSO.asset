@@ -38,7 +38,7 @@ MonoBehaviour:
     _position: {x: 39, y: 0, z: 13}
     _distanceOffset: 2
   - _name: House
-    _position: {x: -9, y: 5, z: -31}
+    _position: {x: -23, y: 15, z: -17}
     _distanceOffset: 2
   - _name: Well
     _position: {x: 31, y: 0, z: 21}
