@@ -16,6 +16,9 @@ MonoBehaviour:
   - _name: Shop
     _position: {x: -7, y: 0, z: -6}
     _distanceOffset: 4
+  - _name: ShopThief
+    _position: {x: -4.5, y: 0, z: -7}
+    _distanceOffset: 0.5
   - _name: Bar
     _position: {x: -8, y: 0, z: -8}
     _distanceOffset: 1.3
