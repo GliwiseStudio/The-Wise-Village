@@ -8,10 +8,11 @@ public class ThiefSU : MonoBehaviour
 {
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterConfigurationSO _configuration;
+	[SerializeField] private float _detectionRange = 5f;
+	[SerializeField] private Transform _shopTransformLookAt;
 	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private UtilitySystemEngine _thiefSU;
-	private BehaviourTreeEngine _thiefBT;
 	private StateMachineEngine _thiefSM;
 	private MovementController _movementController;
 	private NavMeshAgent _agent;
@@ -31,10 +32,11 @@ public class ThiefSU : MonoBehaviour
 	private bool _isEscaping = false;
 	private bool _updateIsInShop = false;
 	private bool _updateHasStealed = false;
+	private bool _isStealing = false;
 
 	private void Awake()
 	{
-		_targetDetector = new TargetDetector(transform, 10f, "Police");
+		_targetDetector = new TargetDetector(transform, _detectionRange, "Police");
 		_animationsHandler = new ThiefAnimationsHandler(_animator);
 		_agent = GetComponent<NavMeshAgent>();
 		_movementController = new MovementController(_agent, _configuration, new Vector3(0, 1.6f, 0));
@@ -84,41 +86,34 @@ public class ThiefSU : MonoBehaviour
 		//Factor ganas de robarn't
 		Factor stealingDesirent = new InvertWeightFactor(stealingDesire);
 
-		// Subarbol
-		//_thiefBT = new BehaviourTreeEngine(false);
-		//LeafNode goToShopLN = _thiefBT.CreateLeafNode("goToShopLN", GoToShop, IsInShop);
-		//LeafNode stealLN = _thiefBT.CreateLeafNode("stealLN", Steal, HasStealed);
+		
 
-		//SequenceNode stealShopSN = _thiefBT.CreateSequenceNode("stealShopSN", false);
-		//stealShopSN.AddChild(goToShopLN);
-		//stealShopSN.AddChild(stealLN);
+		//Crear FSM
+		_thiefSM = new StateMachineEngine();
 
-		//BehaviourTreeStatusPerception perception = _thiefBT.CreatePerception<BehaviourTreeStatusPerception>(HasStealed);
-
-		//_thiefBT.CreateExitTransition("Exit_Transition", stealLN, perception, _thiefSU);
-
-		// SUBMAQUINA DE ESTADOS
-		_thiefSM = new StateMachineEngine(StateMachineEngine.IsASubmachine);
-
-		State goToShopState = _thiefSM.CreateState("goToShopState", GoToShop);
-		State stealState = _thiefSM.CreateState("stealState", Steal);
-		State exitState = _thiefSM.CreateState("exitState", Exit);
-
+		Perception firstPerception = _thiefSM.CreatePerception<ValuePerception>(()=> true);
 		Perception inShopPerception = _thiefSM.CreatePerception<ValuePerception>(IsInShop);
 		Perception stealedPerception = _thiefSM.CreatePerception<ValuePerception>(HasStealed);
-		Perception nothingPerception = _thiefSM.CreatePerception<ValuePerception>(Nothing);
 
+		State first = _thiefSM.CreateEntryState("first", GoToShop);
+		State goToShopState = _thiefSM.CreateState("goToShopState", GoToShop);
+		State stealState = _thiefSM.CreateState("stealState", Steal);
+
+		_thiefSM.CreateTransition("first-shop", first, firstPerception, goToShopState);
 		_thiefSM.CreateTransition("shop-steal", goToShopState, inShopPerception, stealState);
-		_thiefSM.CreateTransition("steal-exit", stealState, stealedPerception, exitState);
-		_thiefSU.CreateSubBehaviour("name", stealingDesire, _thiefSM, goToShopState);
-		_thiefSM.CreateExitTransition("Exit_Transition", exitState, nothingPerception, _thiefSU);
+		_thiefSM.CreateTransition("steal-exit", stealState, stealedPerception, first);
 
-		// MAIN UTILITY
-
-		//_thiefSU.CreateUtilityAction("Steal", stealingDesire, ReturnValues.Succeed, _thiefBT);
+		_thiefSU.CreateUtilityAction("Steal", StealAction, stealingDesire);
 		_thiefSU.CreateUtilityAction("Patrol", Patrol, stealingDesirent);
 		_thiefSU.CreateUtilityAction("Escape", Escape, pursue);
 	}
+
+	private void StealAction()
+    {
+		Debug.Log("Voy a robar");
+		_thiefSM.Reset();
+		_isStealing = true;
+    }
 
     private void Update()
     {
@@ -137,8 +132,14 @@ public class ThiefSU : MonoBehaviour
 
         if (!_hasBeenKnockedDownByPolice)
         {
-            _thiefSU.Update();
-			_thiefSM.Update();
+			if(!_isStealing)
+			{
+				_thiefSU.Update();
+			}
+			else
+			{
+				_thiefSM.Update();
+			}
         }
 
     }
@@ -160,7 +161,7 @@ public class ThiefSU : MonoBehaviour
 		Debug.Log("Thief: Me voy");
 		_isEscaping = true;
 		_isPatrolling = false;
-		_agent.speed *= 2;
+		_agent.speed *= 2.5f;
 		MoveToCurrentWaypoint();
 	}
 
@@ -188,19 +189,11 @@ public class ThiefSU : MonoBehaviour
     #endregion
 
     #region Steal
-    private void Exit()
+	private void GoToShop()
     {
-        
-    }
-
-	private bool Nothing()
-    {
-		return true;
-    }
-    private void GoToShop()
-    {
+		Debug.Log("Going to shop");
 		_animationsHandler.PlayAnimationState("Walk", 0.1f);
-		_movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
+		_movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("ShopThief"));
 		_isPatrolling = false;
 		_isEscaping = false;
 		_updateIsInShop = true;
@@ -208,11 +201,12 @@ public class ThiefSU : MonoBehaviour
 
 	private bool IsInShop()
 	{
-		if (_locator.IsCharacterInPlace(transform.position, "Shop"))
+		if (_locator.IsCharacterInPlace(transform.position, "ShopThief"))
 		{
 			_updateIsInShop = false;
 			_updateHasStealed = true;
 			Debug.Log("Is in shop");
+			transform.LookAt(_shopTransformLookAt, Vector3.up);
 			return true;
         }
         else
@@ -228,26 +222,24 @@ public class ThiefSU : MonoBehaviour
 		_movementController.Stop();
 		
 		gameObject.layer = LayerMask.NameToLayer("Thief");
-		// empty supplies
-		int milk = _supplies.GetMilk();
-		int wheat = _supplies.GetWheat();
-		Debug.Log("milk: " + milk + " whate: " + wheat);
 
-		if (milk != 0 || wheat != 0)
-		{
-			Debug.Log("thief: ate");
-			_timeWithoutEating = 0;
-		}
+		_supplies.MerchantGet();
+
+		_timeWithoutEating = 0;
+		
 	}
 	
 
 	private bool HasStealed()
     {
+		Debug.Log("Bang");
 		if (_animationsHandler.GetStealSuccesfully())
 		{
 			gameObject.layer = LayerMask.NameToLayer("Villager");
 			_updateHasStealed = false;
+			_movementController.ContinueMovement();
 			Debug.Log("stealed succesfully");
+			_isStealing = false;
 			return true;
         }
         else
@@ -288,6 +280,7 @@ public class ThiefSU : MonoBehaviour
     {
 		Debug.Log("thief: HAS BEEN CAUGHT");
 
+		gameObject.layer = LayerMask.NameToLayer("Villager");
 		_movementController.Stop();
 
 		_hasBeenKnockedDownByPolice = true;
@@ -295,16 +288,17 @@ public class ThiefSU : MonoBehaviour
 		_isEscaping = false;
 
 		// SHOULD PLAY ANIMATION
-
+		_animationsHandler.PlayAnimationState("Unconscious", 0.1f);
 		StartCoroutine(KnockedDown());
 	}
 
 
 	IEnumerator KnockedDown()
     {
-		yield return new WaitForSeconds(1);
+		yield return new WaitForSeconds(5);
 		Debug.Log("thief: back to business");
 		_hasBeenSeenByThePolice = false;
 		_hasBeenKnockedDownByPolice = false;
+		_movementController.ContinueMovement();
 	}
 }

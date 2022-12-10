@@ -8,6 +8,8 @@ public class Police : MonoBehaviour
 	[SerializeField] private Animator _animator;
 	[SerializeField] private CharacterConfigurationSO _configuration;
 	[SerializeField] private float _detectionRange;
+	[SerializeField] private float _timePursuing = 5f;
+	private float _currentTimePursuing = 0f;
 
 	private PoliceAnimationsHandler _animationsHandler;
 	private Locator _locator;
@@ -75,6 +77,16 @@ public class Police : MonoBehaviour
         else if (_followingThief)
         {
             GoToThief();
+        }
+
+		if(_followingThief)
+        {
+			_currentTimePursuing += Time.deltaTime;
+			if(_currentTimePursuing >= _timePursuing)
+            {
+				_targetDetector.SetRadius(0.1f);
+				_currentTimePursuing = 0f;
+            }
         }
 
         _policeFSM.Update();
@@ -161,6 +173,7 @@ public class Police : MonoBehaviour
 			_followingThief = false;
 			_thiefGameObject.GetComponent<ThiefSU>().HasBeenCaught();
 			_thiefGameObject = null;
+			_currentTimePursuing = 0f;
 			return true;
 		}
 		else return false;
@@ -175,7 +188,7 @@ public class Police : MonoBehaviour
         else
         {
 			_thiefGameObject.GetComponent<ThiefSU>().IsBeingSeenByPolice(false);
-
+			_targetDetector.SetRadius(_detectionRange);
 			_followingThief = false;
 			_thiefGameObject = null;
 
