@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,8 @@ public class Merchant : MonoBehaviour
     private Supplies _suppliesManager;
     private MovementController _movementController;
     [SerializeField] private CharacterConfigurationSO _configuration;
+    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private Transform _shopTransformLookAt;
 
     private NavMeshAgent _navMeshAgent;
     private TargetDetector _targetDetector;
@@ -21,6 +24,7 @@ public class Merchant : MonoBehaviour
 
     private void Awake()
     {
+        _text.text = "Waiting for clients";
         _locator = FindObjectOfType<Locator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         
@@ -41,11 +45,6 @@ public class Merchant : MonoBehaviour
     private void Update()
     {
         _merchantBT.Update();
-
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Debug.Log(_merchantBT.GetCurrentState().Name);
-        //}
         
     }
 
@@ -167,6 +166,7 @@ public class Merchant : MonoBehaviour
     #region Serve Customer
     private void ServeCustomer()
     {
+        _text.text = "Serving a customer";
         _animationsHandler.PlayAnimationState("Sell", 0.1f);
         _suppliesManager.GetOneMilk();
         _suppliesManager.GetOneWheat();
@@ -176,6 +176,7 @@ public class Merchant : MonoBehaviour
     {
         if (_animationsHandler.GetSellSuccesfully() == true)
         {
+            _text.text = "Waiting for clients";
             return ReturnValues.Succeed;
         }
         else
@@ -188,6 +189,7 @@ public class Merchant : MonoBehaviour
     #region Talk to vendor
     private void TalkToCarrier()
     {
+        _text.text = "Asking carrier for supplies";
         _animationsHandler.PlayAnimationState("Talk", 0.1f);
     }
 
@@ -208,6 +210,7 @@ public class Merchant : MonoBehaviour
     #region Walks
     private void WalkBackToShop()
     {
+        _text.text = "Going back to the shop";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Bar"));
     }
@@ -215,7 +218,10 @@ public class Merchant : MonoBehaviour
     {
         if(_locator.IsCharacterInPlace(transform.position, "Bar"))
         {
+            _text.text = "Waiting for supplies";
             _animationsHandler.PlayAnimationState("Idle", 0.1f);
+            _movementController.Stop();
+            transform.LookAt(_shopTransformLookAt, Vector3.up);
             _suppliesManager.SetIsMerchantInShop(true);
             return ReturnValues.Succeed;
         }
@@ -227,6 +233,7 @@ public class Merchant : MonoBehaviour
 
     private void WalkToCarrier()
     {
+        _text.text = "Going to talk to carrier";
         _suppliesManager.SetIsMerchantInShop(false);
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
@@ -249,7 +256,7 @@ public class Merchant : MonoBehaviour
     #region Interact with supplies
     private void InteractWithSupplies()
     {
-        //Debug.Log("interacting w supllies");
+        _text.text = "Getting supplies ready for customers";
         _animationsHandler.PlayAnimationState("InteractWithSupplies", 0.1f);
     }
 

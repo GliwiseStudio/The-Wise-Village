@@ -1,12 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class Rancher : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
     [SerializeField] private Animator _animator;
+    [SerializeField] private TextMeshProUGUI _text;
 
     private Cow _cow;
     private bool _isCowHungry = false;
@@ -156,6 +158,7 @@ public class Rancher : MonoBehaviour
         //Debug.Log("Check if cow is hungry");
         if(_isCowHungry)
         {
+            _text.text = "Cow hungry";
             return ReturnValues.Succeed;
         }
         else
@@ -193,7 +196,7 @@ public class Rancher : MonoBehaviour
 
     private void MoveToFeeders()
     {
-        //Debug.Log("Move To feeders");
+        _text.text = "Going to feeders";
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Feeders"));
         PlayWalkAnimation();
     }
@@ -206,6 +209,7 @@ public class Rancher : MonoBehaviour
     private void CollectFood()
     {
         //Debug.Log("Collecting food from feeders");
+        _text.text = "Collectiong food from feeders";
         StartCoroutine(CollectFoodCoroutine());
     }
 
@@ -218,6 +222,7 @@ public class Rancher : MonoBehaviour
     private void MoveToBarn()
     {
         //Debug.Log("Moving To Barn");
+        _text.text = "Going to barn";
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Barn"));
         PlayWalkAnimation();
     }
@@ -225,6 +230,7 @@ public class Rancher : MonoBehaviour
     private void FeedCows()
     {
         //Debug.Log("Feeding Cows");
+        _text.text = "Feeding cows";
         PlayFeedAnimation();
         StartCoroutine(FeedingCows());
     }
@@ -252,7 +258,7 @@ public class Rancher : MonoBehaviour
 
     private void MilkCows()
     {
-        //Debug.Log("Milking Cow");
+        _text.text = "Milking cow";
         _isMilkingCows = true;
         PlayMilkAnimation();
         StartCoroutine(MilkingCows());
@@ -323,6 +329,7 @@ public class Rancher : MonoBehaviour
     private void MoveToStorage()
     {
         //Debug.Log("Moving To Storage");
+        _text.text = "Going to storage";
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
         PlayWalkAnimation();
     }
@@ -330,6 +337,7 @@ public class Rancher : MonoBehaviour
     private void StoreMilk()
     {
         //Debug.Log("Storing Milk");
+        _text.text = "Storing milk";
         StartCoroutine(StoringMilk());
     }
 

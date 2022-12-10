@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,6 +11,7 @@ public class ThiefSU : MonoBehaviour
 	[SerializeField] private CharacterConfigurationSO _configuration;
 	[SerializeField] private float _detectionRange = 5f;
 	[SerializeField] private Transform _shopTransformLookAt;
+	[SerializeField] private TextMeshProUGUI _text;
 	private ThiefAnimationsHandler _animationsHandler;
 	private Locator _locator;
 	private UtilitySystemEngine _thiefSU;
@@ -30,8 +32,6 @@ public class ThiefSU : MonoBehaviour
 
 	private bool _isPatrolling = false;
 	private bool _isEscaping = false;
-	private bool _updateIsInShop = false;
-	private bool _updateHasStealed = false;
 	private bool _isStealing = false;
 
 	private void Awake()
@@ -142,8 +142,8 @@ public class ThiefSU : MonoBehaviour
 	#region Patrol // Escape
 	private void Patrol()
 	{
+		_text.text = "Patrolling the shop";
 		_animationsHandler.PlayAnimationState("Walk", 0.1f);
-		Debug.Log("Thief: Patrol");
 		_isEscaping = false;
 		_isPatrolling = true;
 		_agent.speed = _configuration.MovementSpeed;
@@ -152,8 +152,8 @@ public class ThiefSU : MonoBehaviour
 
 	private void Escape()
 	{
+		_text.text = "Running away";
 		_animationsHandler.PlayAnimationState("Run", 0.1f);
-		Debug.Log("Thief: Me voy");
 		_isEscaping = true;
 		_isPatrolling = false;
 		_agent.speed *= 2.5f;
@@ -186,7 +186,7 @@ public class ThiefSU : MonoBehaviour
 	#region Steal
 	private void StealAction() // to go to the submachine (because it isn't really a submachine)
 	{
-		Debug.Log("Voy a robar");
+		_text.text = "Going to steal hehe";
 		_thiefSM.Reset();
 		_isStealing = true;
 	}
@@ -197,15 +197,12 @@ public class ThiefSU : MonoBehaviour
 		_movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("ShopThief"));
 		_isPatrolling = false;
 		_isEscaping = false;
-		_updateIsInShop = true;
 	}
 
 	private bool IsInShop()
 	{
 		if (_locator.IsCharacterInPlace(transform.position, "ShopThief"))
 		{
-			_updateIsInShop = false;
-			_updateHasStealed = true;
 			transform.LookAt(_shopTransformLookAt, Vector3.up);
 			return true;
         }
@@ -243,7 +240,6 @@ public class ThiefSU : MonoBehaviour
 		if (_animationsHandler.GetStealSuccesfully())
 		{
 			gameObject.layer = LayerMask.NameToLayer("Villager");
-			_updateHasStealed = false;
 			_movementController.ContinueMovement();
 			Debug.Log("stealed succesfully");
 			_isStealing = false;
@@ -289,7 +285,7 @@ public class ThiefSU : MonoBehaviour
     #region Being caught/defeated
     public void HasBeenCaught()
     {
-		Debug.Log("thief: HAS BEEN CAUGHT");
+		_text.text = "I've been caught :(";
 
 		gameObject.layer = LayerMask.NameToLayer("Villager");
 		_movementController.Stop();

@@ -25,10 +25,6 @@ public class MovementController
         _navMeshAgent.SetDestination(position);
     }
 
-    public void StopMovement()
-    {
-        _navMeshAgent.isStopped = true;
-    }
 
     public void ContinueMovement()
     {

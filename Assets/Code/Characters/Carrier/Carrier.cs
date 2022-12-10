@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,7 @@ using UnityEngine.AI;
 public class Carrier : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
+    [SerializeField] private TextMeshProUGUI _text;
     private Animator _animator;
     private CarrierAnimationsHandler _carrieAnimatorHandler;
 
@@ -112,7 +114,7 @@ public class Carrier : MonoBehaviour
 
     void EsperarSolicitud() 
     {
-        //Debug.Log("Estado inicial de esperar");
+        _text.text = "Waiting to be asked for supplies";
         _carrieAnimatorHandler.PlayAnimationState("Sitting", 0.1f);
         Invoke("GirarPersonaje", 1f);
     }
@@ -125,7 +127,8 @@ public class Carrier : MonoBehaviour
     void MoverseAlmacen() 
     {
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
-        //Debug.Log("Voy al almacen");
+
+        _text.text = "Going to storage";
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
 
@@ -134,14 +137,15 @@ public class Carrier : MonoBehaviour
         if (_locator.IsCharacterInPlace(transform.position, "Storage")) 
         {
             _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
+            _movementController.Stop();
+            _text.text = "Waiting for supplies on storage";
         }
-        //Debug.Log("Estoy de camino al almacen");
         return _locator.IsCharacterInPlace(transform.position, "Storage");
     }
 
     void MoverseTienda()
     {
-        //Debug.Log("Voy a la tienda");
+        _text.text = "Going to shop";
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Shop"));
     }
@@ -151,6 +155,7 @@ public class Carrier : MonoBehaviour
         //Debug.Log("Estoy de camino a la tienda");
         if(_locator.IsCharacterInPlace(transform.position, "Shop"))
         {
+            _movementController.Stop();
             _carrieAnimatorHandler.PlayAnimationState("Idle", 0.1f);
         }
         return _locator.IsCharacterInPlace(transform.position, "Shop");
@@ -158,6 +163,7 @@ public class Carrier : MonoBehaviour
 
     void EntregarSuministro()
     {
+        _text.text = "Giving supplies to merchant";
         _carrieAnimatorHandler.PlayAnimationState("GiveItems", 0.1f);
         //Debug.Log("Se ha entregado los suministros");
     }
@@ -178,7 +184,7 @@ public class Carrier : MonoBehaviour
 
     void MoversePuesto()
     {
-        //Debug.Log("Voy al puesto");
+        _text.text = "Going to my place";
         _carrieAnimatorHandler.PlayAnimationState("Walking", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
     }
@@ -221,8 +227,8 @@ public class Carrier : MonoBehaviour
 
     void RecogerSuministro() 
     {
+        _text.text = "Getting supplies from storage";
         _carrieAnimatorHandler.PlayAnimationState("GrabObject", 0.1f);
-        //Debug.Log("Suministros recogido");
         _milk = _warehouse.GetMilk();
         _wheat = _warehouse.GetWheat();
     }

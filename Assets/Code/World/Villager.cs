@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +9,8 @@ public class Villager : MonoBehaviour, IShop
     [SerializeField] CharacterConfigurationSO _configuration;
     [SerializeField] private float minRandomSeconds = 0;
     [SerializeField] private float maxRandomSeconds = 30;
+    [SerializeField] private TextMeshProUGUI _text;
+
     private Animator _animator;
     private VillagerAnimationsHandler _animationsHandler;
     private BehaviourTreeEngine _villagerBT;
@@ -128,7 +131,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get water
     private void GetWater()
     {
-        //Debug.Log("getting water");
+        _text.text = "Getting water";
         _animationsHandler.PlayAnimationState("GetWater", 0.1f);
     }
 
@@ -150,7 +153,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get products from vendor
     private void GetProducts()
     {
-        //Debug.Log("getting products");
+        _text.text = "Getting products";
         _animationsHandler.PlayAnimationState("GetProducts", 0.1f);
     }
 
@@ -172,6 +175,7 @@ public class Villager : MonoBehaviour, IShop
     private void WaitInLine()
     {
         // the villager is now a client, because it is waiting in the line
+        _text.text = "Waiting to shop";
         gameObject.layer = LayerMask.NameToLayer("Client");
     }
 
@@ -203,7 +207,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_locator.IsCharacterInPlace(transform.position, "Shop") == true)
         {
-            _movementController.StopMovement();
+            _movementController.Stop();
             _animator.Play("Idle");
             return ReturnValues.Succeed;
         }
@@ -218,6 +222,7 @@ public class Villager : MonoBehaviour, IShop
     #region Go to well
     private void GoToWell()
     {
+        _text.text = "Going to well";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Well"));
     }
@@ -240,7 +245,7 @@ public class Villager : MonoBehaviour, IShop
     #region Drink water
     private void DrinkWater()
     {
-        //Debug.Log("Drinking water");
+        _text.text = "Drinking water";
         _animationsHandler.PlayAnimationState("Drink", 0.1f);
     }
     private ReturnValues DrankWater()
@@ -262,6 +267,7 @@ public class Villager : MonoBehaviour, IShop
     #region Go to house
     private void GoToHouse()
     {
+        _text.text = "Going to house";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("House"));
     }
@@ -285,6 +291,7 @@ public class Villager : MonoBehaviour, IShop
     #region Walk randomly
     private void Walk()
     {
+        _text.text = "Going for a walk";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         MoveToRandomWaypoint();
     }
