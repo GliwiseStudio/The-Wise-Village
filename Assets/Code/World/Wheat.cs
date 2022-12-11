@@ -12,9 +12,13 @@ public class Wheat : MonoBehaviour
     [SerializeField] private float _growingTimeFromBeingWatered = 5f;
     [SerializeField] private float _needsWaterTime = 5f;
 
+    [SerializeField] private GameObject _plantedWheatGameObject;
+    [SerializeField] private GameObject _growedWheatGameObject;
+
     //Sembrar
     public void Sow()
     {
+        _plantedWheatGameObject.SetActive(true);
         StartCoroutine(NeedsWaterCycle());
         OnSowed?.Invoke(true);
     }
@@ -36,7 +40,12 @@ public class Wheat : MonoBehaviour
     private IEnumerator GrowingCycle()
     {
         yield return new WaitForSeconds(_growingTimeFromBeingWatered);
+
         _hasGrown = true;
+
+        _plantedWheatGameObject.SetActive(false);
+        _growedWheatGameObject.SetActive(true);
+
         OnGrown?.Invoke(true);
     }
 
@@ -44,6 +53,7 @@ public class Wheat : MonoBehaviour
     public void Reap()
     {
         _hasGrown = false;
+        _growedWheatGameObject.SetActive(false);
         OnSowed?.Invoke(false);
         OnGrown?.Invoke(false);
     }

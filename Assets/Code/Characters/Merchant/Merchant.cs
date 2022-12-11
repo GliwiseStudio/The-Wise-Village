@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,8 @@ public class Merchant : MonoBehaviour
     private Supplies _suppliesManager;
     private MovementController _movementController;
     [SerializeField] private CharacterConfigurationSO _configuration;
+    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private Transform _shopTransformLookAt;
 
     private NavMeshAgent _navMeshAgent;
     private TargetDetector _targetDetector;
@@ -21,6 +24,7 @@ public class Merchant : MonoBehaviour
 
     private void Awake()
     {
+        _text.text = "Waiting for clients";
         _locator = FindObjectOfType<Locator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         
@@ -28,7 +32,7 @@ public class Merchant : MonoBehaviour
         
         _animationsHandler = new MerchantAnimationsHandler(_animator);
         _suppliesManager = FindObjectOfType<Supplies>();
-        _targetDetector = new TargetDetector(transform, 5f, "Client");
+        _targetDetector = new TargetDetector(transform, 10f, "Client");
         
         CreateAI();
     }
@@ -41,11 +45,6 @@ public class Merchant : MonoBehaviour
     private void Update()
     {
         _merchantBT.Update();
-
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    Debug.Log(_merchantBT.GetCurrentState().Name);
-        //}
         
     }
 
@@ -80,7 +79,7 @@ public class Merchant : MonoBehaviour
 
 
         // Sequence to check if we have supplies, and if not get them
-        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckCounter);
+        LeafNode isCounterEmptyLN = _merchantBT.CreateLeafNode("isCounterEmptyLN", DoNothing, CheckIfCounterEmpty);
 
         SequenceNode checkSuppliesSN = _merchantBT.CreateSequenceNode("checkSuppliesSN", false);
 
@@ -126,7 +125,7 @@ public class Merchant : MonoBehaviour
         GameObject client = _targetDetector.DetectTargetGameObject();
         if (client != null)
         {
-            client.GetComponent<IShop>().Shop();
+            client.GetComponent<IShop>().Shop(); // tell client it is being attended
             return ReturnValues.Succeed;
         }
         else
@@ -135,15 +134,15 @@ public class Merchant : MonoBehaviour
         }
     }
 
-    private ReturnValues CheckCounter()
+    private ReturnValues CheckIfCounterEmpty()
     {
-        if (!_suppliesManager.IsThereMilkLeft() && !_suppliesManager.IsThereWheatLeft())
+        if (_suppliesManager.IsThereMilkLeft() && _suppliesManager.IsThereWheatLeft())
         {
+            // Counter ain't empty
             return ReturnValues.Failed;
         }
         else
         {
-            // now we've got supplies, that means that they've been delivered, so we can return a succeed and go on with the code to serve some customers
             return ReturnValues.Succeed;
         }
     }
@@ -167,17 +166,17 @@ public class Merchant : MonoBehaviour
     #region Serve Customer
     private void ServeCustomer()
     {
-        //Debug.Log("serve customer");
+        _text.text = "Serving a customer";
         _animationsHandler.PlayAnimationState("Sell", 0.1f);
+        _suppliesManager.GetOneMilk();
+        _suppliesManager.GetOneWheat();
     }
 
     private ReturnValues ServedCustomer()
     {
         if (_animationsHandler.GetSellSuccesfully() == true)
         {
-            _suppliesManager.MerchantGet();
-            // tell client it has been served, still to implement
-            //Debug.Log("served customer. Milk left: " + _milk + " Bread left: " + _bread);
+            _text.text = "Waiting for clients";
             return ReturnValues.Succeed;
         }
         else
@@ -190,6 +189,7 @@ public class Merchant : MonoBehaviour
     #region Talk to vendor
     private void TalkToCarrier()
     {
+        _text.text = "Asking carrier for supplies";
         _animationsHandler.PlayAnimationState("Talk", 0.1f);
     }
 
@@ -210,6 +210,7 @@ public class Merchant : MonoBehaviour
     #region Walks
     private void WalkBackToShop()
     {
+        _text.text = "Going back to the shop";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Bar"));
     }
@@ -217,7 +218,10 @@ public class Merchant : MonoBehaviour
     {
         if(_locator.IsCharacterInPlace(transform.position, "Bar"))
         {
+            _text.text = "Waiting for supplies";
             _animationsHandler.PlayAnimationState("Idle", 0.1f);
+            _movementController.Stop();
+            transform.LookAt(_shopTransformLookAt, Vector3.up);
             _suppliesManager.SetIsMerchantInShop(true);
             return ReturnValues.Succeed;
         }
@@ -229,6 +233,7 @@ public class Merchant : MonoBehaviour
 
     private void WalkToCarrier()
     {
+        _text.text = "Going to talk to carrier";
         _suppliesManager.SetIsMerchantInShop(false);
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("CarrierPlace"));
@@ -251,7 +256,7 @@ public class Merchant : MonoBehaviour
     #region Interact with supplies
     private void InteractWithSupplies()
     {
-        //Debug.Log("interacting w supllies");
+        _text.text = "Getting supplies ready for customers";
         _animationsHandler.PlayAnimationState("InteractWithSupplies", 0.1f);
     }
 

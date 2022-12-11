@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,12 +9,16 @@ public class Villager : MonoBehaviour, IShop
     [SerializeField] CharacterConfigurationSO _configuration;
     [SerializeField] private float minRandomSeconds = 0;
     [SerializeField] private float maxRandomSeconds = 30;
+    [SerializeField] private TextMeshProUGUI _text;
+
     private Animator _animator;
     private VillagerAnimationsHandler _animationsHandler;
     private BehaviourTreeEngine _villagerBT;
     private Locator _locator;
     private MovementController _movementController;
     private NavMeshAgent _navMeshAgent;
+    private Vector3 _currentWaypoint;
+    private WaypointsController _waypointsController;
 
     private bool _isHungry = false;
     private bool _isThirsty = false;
@@ -25,6 +30,7 @@ public class Villager : MonoBehaviour, IShop
         _animator = GetComponent<Animator>();
         _animationsHandler = new VillagerAnimationsHandler(_animator);
         _locator = FindObjectOfType<Locator>();
+        _waypointsController = FindObjectOfType<WaypointsController>();
 
         CreateAI();
     }
@@ -125,7 +131,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get water
     private void GetWater()
     {
-        //Debug.Log("getting water");
+        _text.text = "Getting water";
         _animationsHandler.PlayAnimationState("GetWater", 0.1f);
     }
 
@@ -147,7 +153,7 @@ public class Villager : MonoBehaviour, IShop
     #region Get products from vendor
     private void GetProducts()
     {
-        //Debug.Log("getting products");
+        _text.text = "Getting products";
         _animationsHandler.PlayAnimationState("GetProducts", 0.1f);
     }
 
@@ -169,6 +175,7 @@ public class Villager : MonoBehaviour, IShop
     private void WaitInLine()
     {
         // the villager is now a client, because it is waiting in the line
+        _text.text = "Waiting to shop";
         gameObject.layer = LayerMask.NameToLayer("Client");
     }
 
@@ -200,7 +207,7 @@ public class Villager : MonoBehaviour, IShop
     {
         if (_locator.IsCharacterInPlace(transform.position, "Shop") == true)
         {
-            _movementController.StopMovement();
+            _movementController.Stop();
             _animator.Play("Idle");
             return ReturnValues.Succeed;
         }
@@ -215,6 +222,7 @@ public class Villager : MonoBehaviour, IShop
     #region Go to well
     private void GoToWell()
     {
+        _text.text = "Going to well";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Well"));
     }
@@ -237,7 +245,7 @@ public class Villager : MonoBehaviour, IShop
     #region Drink water
     private void DrinkWater()
     {
-        //Debug.Log("Drinking water");
+        _text.text = "Drinking water";
         _animationsHandler.PlayAnimationState("Drink", 0.1f);
     }
     private ReturnValues DrankWater()
@@ -259,6 +267,7 @@ public class Villager : MonoBehaviour, IShop
     #region Go to house
     private void GoToHouse()
     {
+        _text.text = "Going to house";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("House"));
     }
@@ -279,18 +288,23 @@ public class Villager : MonoBehaviour, IShop
     }
     #endregion
 
-    // not implemented random walks, it walks to well right now
-    #region Walk
+    #region Walk randomly
     private void Walk()
     {
-        //Debug.Log("Walk randomly");
+        _text.text = "Going for a walk";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
-        _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Well"));
-        // it should move to a random position each time, like take random walks, still to implement
+        MoveToRandomWaypoint();
     }
+
+    private void MoveToRandomWaypoint()
+    {
+        _currentWaypoint = _waypointsController.GetRandomWaypoint("Villager");
+        _movementController.MoveToPosition(_currentWaypoint);
+    }
+
     private ReturnValues WalkCheck()
     {
-        if (_locator.IsCharacterInPlace(transform.position, "Well") == true)
+        if (_waypointsController.IsCharacterInPlace(transform.position, _currentWaypoint))
         {
             _animator.Play("Idle");
             return ReturnValues.Succeed;

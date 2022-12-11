@@ -14,18 +14,14 @@ public class Supplies : MonoBehaviour
         OnMerchantIsInShop?.Invoke(status);
     }
 
-    public int GetMilk()
+    public void GetOneMilk()
     {
-        int tmp = _milk;
-        _milk = 0;
-        return tmp;
+        _milk--;
     }
 
-    public int GetWheat()
+    public void GetOneWheat()
     {
-        int tmp = _wheat;
-        _wheat = 0;
-        return tmp;
+        _wheat--;
     }
 
     public void Deliver(int milk, int wheat)
@@ -54,11 +50,5 @@ public class Supplies : MonoBehaviour
             return true;
         else
             return false;
-    }
-
-    public void MerchantGet()
-    {
-        _wheat--;
-        _milk--;
     }
 }

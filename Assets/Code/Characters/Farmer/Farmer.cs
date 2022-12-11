@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,6 +8,7 @@ public class Farmer : MonoBehaviour
 {
     [SerializeField] private CharacterConfigurationSO _configuration;
     [SerializeField] private Animator _animator;
+    [SerializeField] private TextMeshProUGUI _text;
     private FarmerAnimationsHandler _animationsHandler;
     private BehaviourTreeEngine _farmerBT;
     private StateMachineEngine _reapWheatSubStateMachine;
@@ -147,6 +149,7 @@ public class Farmer : MonoBehaviour
     private void SowWheat()
     {
         //Debug.Log("Sow Wheat");
+        _text.text = "Sowing wheat";
         _animationsHandler.PlayAnimationState("SowWheat", 0.1f);
         StartCoroutine(SowWheatCycle());
     }
@@ -184,6 +187,7 @@ public class Farmer : MonoBehaviour
     private void WaterWheat()
     {
         //Debug.Log("Water Wheat");
+        _text.text = "Watering wheat";
         _animationsHandler.PlayAnimationState("WaterWheat", 0.1f);
         StartCoroutine(WaterWheatCycle());
     }
@@ -241,6 +245,7 @@ public class Farmer : MonoBehaviour
     private void ReapWheat()
     {
         //Debug.Log("Reap Wheat");
+        _text.text = "Reaping wheat";
         _animationsHandler.PlayAnimationState("ReapWheat", 0.1f);
         StartCoroutine(ReapWheatCycle());
     }
@@ -256,6 +261,7 @@ public class Farmer : MonoBehaviour
     private void MoveToStorage()
     {
         //Debug.Log("Moving To Storage");
+        _text.text = "Going to storage";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Storage"));
     }
@@ -277,6 +283,7 @@ public class Farmer : MonoBehaviour
     private void MoveToCountryside()
     {
         //Debug.Log("Moving To Countryside");
+        _text.text = "Going to countryside";
         _animationsHandler.PlayAnimationState("Walk", 0.1f);
         _movementController.MoveToPosition(_locator.GetPlaceOfInterestPositionFromName("Countryside"));
     }
@@ -288,11 +295,6 @@ public class Farmer : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-        {
-            //Debug.Log(_farmerBT.GetCurrentState().Name);
-        }
-
         _farmerBT.Update();
         _reapWheatSubStateMachine.Update();
     }

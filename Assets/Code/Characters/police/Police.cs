@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ public class Police : MonoBehaviour
 	[SerializeField] private CharacterConfigurationSO _configuration;
 	[SerializeField] private float _detectionRange;
 	[SerializeField] private float _timePursuing = 5f;
+	[SerializeField] private TextMeshProUGUI _text;
 	private float _currentTimePursuing = 0f;
 
 	private PoliceAnimationsHandler _animationsHandler;
@@ -96,7 +98,7 @@ public class Police : MonoBehaviour
 	#region Patrol related methods
 	private void PatrollingToPoint()
 	{
-		Debug.Log("police: patrol");
+		_text.text = "Patrolling the streets";
 		_seenForTheFirstTime = true;
 		_animationsHandler.PlayAnimationState("Walk", 0.1f);
         _agent.speed = _configuration.MovementSpeed;
@@ -125,8 +127,8 @@ public class Police : MonoBehaviour
 	{
 		if(_seenForTheFirstTime && _targetDetector.DetectTarget() != null)
         {
+			_text.text = "Seen a thief!!";
 			_seenForTheFirstTime = false;
-			Debug.Log("Police: seen thief");
 
 			_thiefGameObject = _targetDetector.DetectTargetGameObject();
 			_thiefGameObject.GetComponent<ThiefSU>().IsBeingSeenByPolice(true);
@@ -170,6 +172,7 @@ public class Police : MonoBehaviour
     {
 		if (_thiefGameObject != null && Vector3.Distance(_thiefGameObject.transform.position, transform.position) < 3f) 
 		{
+			_text.text = "Got you!";
 			_followingThief = false;
 			_thiefGameObject.GetComponent<ThiefSU>().HasBeenCaught();
 			_thiefGameObject = null;
@@ -187,6 +190,7 @@ public class Police : MonoBehaviour
         }
         else
         {
+			_text.text = "I lost the thief";
 			_thiefGameObject.GetComponent<ThiefSU>().IsBeingSeenByPolice(false);
 			_targetDetector.SetRadius(_detectionRange);
 			_followingThief = false;
